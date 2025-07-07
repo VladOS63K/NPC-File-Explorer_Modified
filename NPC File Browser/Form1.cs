@@ -101,8 +101,11 @@ namespace NPC_File_Browser
 
         private void UpdateItems_FileClicked(object sender, string directory)
         {
-            PathsClicked.Add(directory);
-            Console.WriteLine(directory);
+            if (PathsClicked.Contains(directory) == false) //Fixes adding the same directory twice
+            {
+                PathsClicked.Add(directory);
+                Console.WriteLine(directory);
+            }
         }
 
         private void UpdateItems_FileDoubleClicked(object sender, string directory)
@@ -120,11 +123,11 @@ namespace NPC_File_Browser
         {
             if (e.KeyCode == Keys.Escape)
             {
-                foreach (Control ctrl in ContentPanel.Controls)
+                foreach (Control control in ContentPanel.Controls)
                 {
-                    if (ctrl is FileControl fileCtrl && fileCtrl.IsSelected)
+                    if (control is FileControl fileControl && fileControl.IsSelected)
                     {
-                        fileCtrl.Deselect();
+                        fileControl.Deselect();
                     }
                 }
 

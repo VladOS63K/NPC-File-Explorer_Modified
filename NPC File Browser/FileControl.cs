@@ -50,7 +50,7 @@ namespace NPC_File_Browser
         public void Deselect()
         {
             IsSelected = false;
-            this.BackColor = Color.Transparent; // or whatever your normal color is
+            this.BackColor = Color.Transparent;
         }
 
         private void FileControl_DoubleClick(object sender, EventArgs e)

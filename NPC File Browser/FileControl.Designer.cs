@@ -98,9 +98,6 @@ namespace NPC_File_Browser
             this.Size = new System.Drawing.Size(609, 25);
             this.Click += new System.EventHandler(this.FileControl_Click);
             this.DoubleClick += new System.EventHandler(this.FileControl_DoubleClick);
-            this.SetStyle(ControlStyles.OptimizedDoubleBuffer, true);
-            this.SetStyle(ControlStyles.ResizeRedraw, true);
-            this.SetStyle(ControlStyles.AllPaintingInWmPaint, true);
             ((System.ComponentModel.ISupportInitialize)(this.Icon)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
