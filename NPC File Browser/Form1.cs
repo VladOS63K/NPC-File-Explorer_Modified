@@ -22,9 +22,7 @@ namespace NPC_File_Browser
         [DllImport("dwmapi.dll")]
         static extern int DwmSetWindowAttribute(IntPtr hwnd, DwmWindowAttribute attr, ref int attrValue, int attrSize);
 
-
         string CurrentPath;
-
         List<string> PathsClicked = new List<string>();
 
         public Form1()
@@ -36,12 +34,8 @@ namespace NPC_File_Browser
         {
             int trueValue = 1;
             SetWindowTheme(control.Handle, "DarkMode_Explorer", null);
-            DwmSetWindowAttribute(control.Handle,
-                DwmWindowAttribute.DWMWA_USE_IMMERSIVE_DARK_MODE,
-                ref trueValue, Marshal.SizeOf(typeof(int)));
-            DwmSetWindowAttribute(control.Handle,
-                DwmWindowAttribute.DWMWA_MICA_EFFECT,
-                ref trueValue, Marshal.SizeOf(typeof(int)));
+            DwmSetWindowAttribute(control.Handle, DwmWindowAttribute.DWMWA_USE_IMMERSIVE_DARK_MODE, ref trueValue, Marshal.SizeOf(typeof(int)));
+            DwmSetWindowAttribute(control.Handle, DwmWindowAttribute.DWMWA_MICA_EFFECT, ref trueValue, Marshal.SizeOf(typeof(int)));
         }
 
         private void Form1_Resize(object sender, EventArgs e)
@@ -53,33 +47,32 @@ namespace NPC_File_Browser
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            LoadItems(@"C:\Users\test\Downloads\Test");
+            CurrentPath = @"C:\Users\test\Downloads\Test";
+            LoadItems(CurrentPath);
 
             ContentPanel.FlowDirection = FlowDirection.TopDown;
             ContentPanel.WrapContents = false;
-            EnableControlDarkMode(ContentPanel);
             ContentPanel.AutoScroll = true;
+            EnableControlDarkMode(ContentPanel);
         }
 
         private void LoadItems(string directory)
         {
             CurrentPath = directory;
             ContentPanel.Controls.Clear();
+
             string[] folders = Directory.GetDirectories(directory);
+            string[] files = Directory.GetFiles(directory);
 
             foreach (var folder in folders)
             {
                 DirectoryInfo info = new DirectoryInfo(folder);
-
                 AddItem(false, info.Name.ToString(), "size here", "Folder", info.FullName);
             }
-
-            string[] files = Directory.GetFiles(directory);
 
             foreach (var file in files)
             {
                 FileInfo info = new FileInfo(file);
-
                 AddItem(true, info.Name.ToString(), Helper.Helper.ConvertedSize(Convert.ToDouble(info.Length.ToString())), info.Extension.ToString().Remove(0, 1).ToUpper() + " File", info.FullName);
             }
         }
@@ -98,9 +91,7 @@ namespace NPC_File_Browser
             if (PathsClicked.Contains(directory) == false) //Fixes adding the same directory twice
             {
                 PathsClicked.Add(directory);
-                ButtonCopy.Enabled = true;
-                ButtonCopy.IconColor = Color.White;
-                Console.WriteLine(directory);
+                EnableUI();
             }
         }
 
@@ -111,8 +102,7 @@ namespace NPC_File_Browser
 
         private void ButtonReturn_Click(object sender, EventArgs e)
         {
-            string newDirectory = Directory.GetParent(CurrentPath).FullName;
-            LoadItems(newDirectory);
+            LoadItems(Directory.GetParent(CurrentPath).FullName);
         }
 
         private void Form1_KeyDown(object sender, System.Windows.Forms.KeyEventArgs e)
@@ -128,23 +118,22 @@ namespace NPC_File_Browser
                 }
 
                 PathsClicked.Clear();
-                UpdateUI();
+                DisableUI();
             }
         }
 
-        private void CopyDirectories(List<string> dirs)
+        private void CopyDirectories(List<string> directories)
         {
-            if (dirs == null || dirs.Count == 0)
+            if (directories == null || directories.Count == 0)
             {
-                MessageBox.Show("Nothing to copy!");
                 return;
             }
 
             StringCollection paths = new StringCollection();
-            paths.AddRange(dirs.ToArray());
+            paths.AddRange(directories.ToArray());
 
             Clipboard.SetFileDropList(paths);
-            ButtonPaste.Enabled = false;
+            ButtonPaste.Enabled = true;
             ButtonPaste.IconColor = Color.White;
         }
 
@@ -163,24 +152,24 @@ namespace NPC_File_Browser
                 {
                     try
                     {
-                        string destPath = Path.Combine(directory, Path.GetFileName(path));
-
                         if (File.Exists(path))
                         {
-                            File.Copy(path, destPath, overwrite: true);
+                            File.Copy(path, Path.Combine(directory, Path.GetFileName(path)), overwrite: true);
                         }
 
                         else if (Directory.Exists(path))
                         {
-                            Helper.Helper.CopyDirectory(path, destPath);
+                            Helper.Helper.CopyDirectory(path, Path.Combine(directory, Path.GetFileName(path)));
                         }
                     }
+
                     catch (Exception ex)
                     {
-                        MessageBox.Show($"Error while pasting: {ex.Message}");
+                        MessageBox.Show("Error pasting: " + ex.Message);
                     }
                 }
             }
+
             else
             {
                 MessageBox.Show("Clipboard does not contain any files or folders.");
@@ -210,7 +199,7 @@ namespace NPC_File_Browser
 
         private void ButtonPaste_Click(object sender, EventArgs e)
         {
-            PasteDirectories(@"C:\Users\test\Downloads\Test");
+            PasteDirectories(CurrentPath);
 
             foreach (Control control in ContentPanel.Controls)
             {
@@ -220,19 +209,17 @@ namespace NPC_File_Browser
                 }
             }
 
-
             PathsClicked.Clear();
-            UpdateUI();
-            LoadItems(@"C:\Users\test\Downloads\Test");
+            DisableUI();
+            LoadItems(CurrentPath);
         }
 
         private void ButtonDelete_Click(object sender, EventArgs e)
         {
             DeleteDirectories(PathsClicked);
-
             PathsClicked.Clear();
-            UpdateUI();
-            LoadItems(@"C:\Users\test\Downloads\Test");
+            DisableUI();
+            LoadItems(CurrentPath);
         }
 
         private void ButtonCut_Click(object sender, EventArgs e)
@@ -240,10 +227,20 @@ namespace NPC_File_Browser
             //Nah I aint doing this
         }
 
-        private void UpdateUI()
+        private void EnableUI()
+        {
+            ButtonCopy.Enabled = true;
+            ButtonCopy.IconColor = Color.White;
+            ButtonDelete.Enabled = true;
+            ButtonDelete.IconColor = Color.White;
+        }
+
+        private void DisableUI()
         {
             ButtonCopy.Enabled = false;
             ButtonCopy.IconColor = Color.Gray;
+            ButtonDelete.Enabled = false;
+            ButtonDelete.IconColor = Color.Gray;
         }
     }
 }
