@@ -1,16 +1,10 @@
 ﻿using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.IO;
-using NPC_File_Browser.Helper;
 using System.Runtime.InteropServices;
-using System.Windows.Input;
 using System;
+using System.Collections.Specialized;
 
 namespace NPC_File_Browser
 {
@@ -104,6 +98,8 @@ namespace NPC_File_Browser
             if (PathsClicked.Contains(directory) == false) //Fixes adding the same directory twice
             {
                 PathsClicked.Add(directory);
+                ButtonCopy.Enabled = true;
+                ButtonCopy.IconColor = Color.White;
                 Console.WriteLine(directory);
             }
         }
@@ -132,7 +128,122 @@ namespace NPC_File_Browser
                 }
 
                 PathsClicked.Clear();
+                UpdateUI();
             }
+        }
+
+        private void CopyDirectories(List<string> dirs)
+        {
+            if (dirs == null || dirs.Count == 0)
+            {
+                MessageBox.Show("Nothing to copy!");
+                return;
+            }
+
+            StringCollection paths = new StringCollection();
+            paths.AddRange(dirs.ToArray());
+
+            Clipboard.SetFileDropList(paths);
+            ButtonPaste.Enabled = false;
+            ButtonPaste.IconColor = Color.White;
+        }
+
+        private void PasteDirectories(string directory)
+        {
+            if (!Directory.Exists(directory))
+            {
+                return;
+            }
+
+            if (Clipboard.ContainsFileDropList())
+            {
+                StringCollection paths = Clipboard.GetFileDropList();
+
+                foreach (string path in paths)
+                {
+                    try
+                    {
+                        string destPath = Path.Combine(directory, Path.GetFileName(path));
+
+                        if (File.Exists(path))
+                        {
+                            File.Copy(path, destPath, overwrite: true);
+                        }
+
+                        else if (Directory.Exists(path))
+                        {
+                            Helper.Helper.CopyDirectory(path, destPath);
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show($"Error while pasting: {ex.Message}");
+                    }
+                }
+            }
+            else
+            {
+                MessageBox.Show("Clipboard does not contain any files or folders.");
+            }
+        }
+
+        private void DeleteDirectories(List<string> directories)
+        {
+            foreach (string directory in directories)
+            {
+                if (File.Exists(directory))
+                {
+                    File.Delete(directory);
+                }
+
+                else if (Directory.Exists(directory))
+                {
+                    Directory.Delete(directory, true);
+                }
+            }
+        }
+
+        private void ButtonCopy_Click(object sender, EventArgs e)
+        {
+            CopyDirectories(PathsClicked);
+        }
+
+        private void ButtonPaste_Click(object sender, EventArgs e)
+        {
+            PasteDirectories(@"C:\Users\test\Downloads\Test");
+
+            foreach (Control control in ContentPanel.Controls)
+            {
+                if (control is FileControl fileControl && fileControl.IsSelected)
+                {
+                    fileControl.Deselect();
+                }
+            }
+
+
+            PathsClicked.Clear();
+            UpdateUI();
+            LoadItems(@"C:\Users\test\Downloads\Test");
+        }
+
+        private void ButtonDelete_Click(object sender, EventArgs e)
+        {
+            DeleteDirectories(PathsClicked);
+
+            PathsClicked.Clear();
+            UpdateUI();
+            LoadItems(@"C:\Users\test\Downloads\Test");
+        }
+
+        private void ButtonCut_Click(object sender, EventArgs e)
+        {
+            //Nah I aint doing this
+        }
+
+        private void UpdateUI()
+        {
+            ButtonCopy.Enabled = false;
+            ButtonCopy.IconColor = Color.Gray;
         }
     }
 }

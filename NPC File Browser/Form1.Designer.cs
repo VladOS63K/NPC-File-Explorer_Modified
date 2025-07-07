@@ -34,25 +34,25 @@
             this.panel5 = new System.Windows.Forms.Panel();
             this.iconPictureBox7 = new FontAwesome.Sharp.IconPictureBox();
             this.iconPictureBox8 = new FontAwesome.Sharp.IconPictureBox();
-            this.iconPictureBox4 = new FontAwesome.Sharp.IconPictureBox();
             this.panel4 = new System.Windows.Forms.Panel();
-            this.iconPictureBox3 = new FontAwesome.Sharp.IconPictureBox();
-            this.iconPictureBox1 = new FontAwesome.Sharp.IconPictureBox();
-            this.iconPictureBox2 = new FontAwesome.Sharp.IconPictureBox();
+            this.ButtonDelete = new FontAwesome.Sharp.IconPictureBox();
+            this.ButtonPaste = new FontAwesome.Sharp.IconPictureBox();
+            this.ButtonCopy = new FontAwesome.Sharp.IconPictureBox();
             this.ButtonForward = new FontAwesome.Sharp.IconPictureBox();
             this.ButtonBack = new FontAwesome.Sharp.IconPictureBox();
             this.ButtonReturn = new FontAwesome.Sharp.IconPictureBox();
             this.ContentPanel = new System.Windows.Forms.FlowLayoutPanel();
+            this.ButtonCut = new FontAwesome.Sharp.IconPictureBox();
             this.panel3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.iconPictureBox7)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.iconPictureBox8)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.iconPictureBox4)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.iconPictureBox3)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.iconPictureBox1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.iconPictureBox2)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.ButtonDelete)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.ButtonPaste)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.ButtonCopy)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.ButtonForward)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.ButtonBack)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.ButtonReturn)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.ButtonCut)).BeginInit();
             this.SuspendLayout();
             // 
             // panel1
@@ -82,11 +82,11 @@
             this.panel3.Controls.Add(this.panel5);
             this.panel3.Controls.Add(this.iconPictureBox7);
             this.panel3.Controls.Add(this.iconPictureBox8);
-            this.panel3.Controls.Add(this.iconPictureBox4);
+            this.panel3.Controls.Add(this.ButtonCut);
             this.panel3.Controls.Add(this.panel4);
-            this.panel3.Controls.Add(this.iconPictureBox3);
-            this.panel3.Controls.Add(this.iconPictureBox1);
-            this.panel3.Controls.Add(this.iconPictureBox2);
+            this.panel3.Controls.Add(this.ButtonDelete);
+            this.panel3.Controls.Add(this.ButtonPaste);
+            this.panel3.Controls.Add(this.ButtonCopy);
             this.panel3.Controls.Add(this.ButtonForward);
             this.panel3.Controls.Add(this.ButtonBack);
             this.panel3.Controls.Add(this.ButtonReturn);
@@ -132,20 +132,6 @@
             this.iconPictureBox8.TabIndex = 8;
             this.iconPictureBox8.TabStop = false;
             // 
-            // iconPictureBox4
-            // 
-            this.iconPictureBox4.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(30)))), ((int)(((byte)(30)))));
-            this.iconPictureBox4.IconChar = FontAwesome.Sharp.IconChar.Cut;
-            this.iconPictureBox4.IconColor = System.Drawing.Color.White;
-            this.iconPictureBox4.IconFont = FontAwesome.Sharp.IconFont.Auto;
-            this.iconPictureBox4.IconSize = 23;
-            this.iconPictureBox4.Location = new System.Drawing.Point(170, 6);
-            this.iconPictureBox4.Name = "iconPictureBox4";
-            this.iconPictureBox4.Size = new System.Drawing.Size(23, 28);
-            this.iconPictureBox4.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.iconPictureBox4.TabIndex = 7;
-            this.iconPictureBox4.TabStop = false;
-            // 
             // panel4
             // 
             this.panel4.BackColor = System.Drawing.Color.White;
@@ -155,47 +141,54 @@
             this.panel4.Size = new System.Drawing.Size(1, 28);
             this.panel4.TabIndex = 6;
             // 
-            // iconPictureBox3
+            // ButtonDelete
             // 
-            this.iconPictureBox3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(30)))), ((int)(((byte)(30)))));
-            this.iconPictureBox3.IconChar = FontAwesome.Sharp.IconChar.TrashAlt;
-            this.iconPictureBox3.IconColor = System.Drawing.Color.White;
-            this.iconPictureBox3.IconFont = FontAwesome.Sharp.IconFont.Auto;
-            this.iconPictureBox3.IconSize = 23;
-            this.iconPictureBox3.Location = new System.Drawing.Point(146, 6);
-            this.iconPictureBox3.Name = "iconPictureBox3";
-            this.iconPictureBox3.Size = new System.Drawing.Size(23, 28);
-            this.iconPictureBox3.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.iconPictureBox3.TabIndex = 5;
-            this.iconPictureBox3.TabStop = false;
+            this.ButtonDelete.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(30)))), ((int)(((byte)(30)))));
+            this.ButtonDelete.ForeColor = System.Drawing.Color.Gray;
+            this.ButtonDelete.IconChar = FontAwesome.Sharp.IconChar.TrashAlt;
+            this.ButtonDelete.IconColor = System.Drawing.Color.Gray;
+            this.ButtonDelete.IconFont = FontAwesome.Sharp.IconFont.Auto;
+            this.ButtonDelete.IconSize = 23;
+            this.ButtonDelete.Location = new System.Drawing.Point(146, 6);
+            this.ButtonDelete.Name = "ButtonDelete";
+            this.ButtonDelete.Size = new System.Drawing.Size(23, 28);
+            this.ButtonDelete.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.ButtonDelete.TabIndex = 5;
+            this.ButtonDelete.TabStop = false;
+            this.ButtonDelete.Click += new System.EventHandler(this.ButtonDelete_Click);
             // 
-            // iconPictureBox1
+            // ButtonPaste
             // 
-            this.iconPictureBox1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(30)))), ((int)(((byte)(30)))));
-            this.iconPictureBox1.IconChar = FontAwesome.Sharp.IconChar.Paste;
-            this.iconPictureBox1.IconColor = System.Drawing.Color.White;
-            this.iconPictureBox1.IconFont = FontAwesome.Sharp.IconFont.Auto;
-            this.iconPictureBox1.IconSize = 23;
-            this.iconPictureBox1.Location = new System.Drawing.Point(121, 6);
-            this.iconPictureBox1.Name = "iconPictureBox1";
-            this.iconPictureBox1.Size = new System.Drawing.Size(23, 28);
-            this.iconPictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.iconPictureBox1.TabIndex = 4;
-            this.iconPictureBox1.TabStop = false;
+            this.ButtonPaste.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(30)))), ((int)(((byte)(30)))));
+            this.ButtonPaste.ForeColor = System.Drawing.Color.Gray;
+            this.ButtonPaste.IconChar = FontAwesome.Sharp.IconChar.Paste;
+            this.ButtonPaste.IconColor = System.Drawing.Color.Gray;
+            this.ButtonPaste.IconFont = FontAwesome.Sharp.IconFont.Auto;
+            this.ButtonPaste.IconSize = 23;
+            this.ButtonPaste.Location = new System.Drawing.Point(121, 6);
+            this.ButtonPaste.Name = "ButtonPaste";
+            this.ButtonPaste.Size = new System.Drawing.Size(23, 28);
+            this.ButtonPaste.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.ButtonPaste.TabIndex = 4;
+            this.ButtonPaste.TabStop = false;
+            this.ButtonPaste.Click += new System.EventHandler(this.ButtonPaste_Click);
             // 
-            // iconPictureBox2
+            // ButtonCopy
             // 
-            this.iconPictureBox2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(30)))), ((int)(((byte)(30)))));
-            this.iconPictureBox2.IconChar = FontAwesome.Sharp.IconChar.Clipboard;
-            this.iconPictureBox2.IconColor = System.Drawing.Color.White;
-            this.iconPictureBox2.IconFont = FontAwesome.Sharp.IconFont.Auto;
-            this.iconPictureBox2.IconSize = 23;
-            this.iconPictureBox2.Location = new System.Drawing.Point(98, 6);
-            this.iconPictureBox2.Name = "iconPictureBox2";
-            this.iconPictureBox2.Size = new System.Drawing.Size(23, 28);
-            this.iconPictureBox2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.iconPictureBox2.TabIndex = 3;
-            this.iconPictureBox2.TabStop = false;
+            this.ButtonCopy.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(30)))), ((int)(((byte)(30)))));
+            this.ButtonCopy.Enabled = false;
+            this.ButtonCopy.ForeColor = System.Drawing.Color.Gray;
+            this.ButtonCopy.IconChar = FontAwesome.Sharp.IconChar.Clipboard;
+            this.ButtonCopy.IconColor = System.Drawing.Color.Gray;
+            this.ButtonCopy.IconFont = FontAwesome.Sharp.IconFont.Auto;
+            this.ButtonCopy.IconSize = 23;
+            this.ButtonCopy.Location = new System.Drawing.Point(98, 6);
+            this.ButtonCopy.Name = "ButtonCopy";
+            this.ButtonCopy.Size = new System.Drawing.Size(23, 28);
+            this.ButtonCopy.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.ButtonCopy.TabIndex = 3;
+            this.ButtonCopy.TabStop = false;
+            this.ButtonCopy.Click += new System.EventHandler(this.ButtonCopy_Click);
             // 
             // ButtonForward
             // 
@@ -249,6 +242,22 @@
             this.ContentPanel.Size = new System.Drawing.Size(983, 550);
             this.ContentPanel.TabIndex = 3;
             // 
+            // ButtonCut
+            // 
+            this.ButtonCut.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(30)))), ((int)(((byte)(30)))));
+            this.ButtonCut.ForeColor = System.Drawing.Color.Gray;
+            this.ButtonCut.IconChar = FontAwesome.Sharp.IconChar.Cut;
+            this.ButtonCut.IconColor = System.Drawing.Color.Gray;
+            this.ButtonCut.IconFont = FontAwesome.Sharp.IconFont.Auto;
+            this.ButtonCut.IconSize = 23;
+            this.ButtonCut.Location = new System.Drawing.Point(170, 6);
+            this.ButtonCut.Name = "ButtonCut";
+            this.ButtonCut.Size = new System.Drawing.Size(23, 28);
+            this.ButtonCut.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.ButtonCut.TabIndex = 7;
+            this.ButtonCut.TabStop = false;
+            this.ButtonCut.Click += new System.EventHandler(this.ButtonCut_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -259,6 +268,7 @@
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.panel3);
             this.Controls.Add(this.panel2);
+            this.KeyPreview = true;
             this.MaximumSize = new System.Drawing.Size(1920, 1080);
             this.MinimumSize = new System.Drawing.Size(1050, 191);
             this.Name = "Form1";
@@ -266,18 +276,17 @@
             this.Text = "NPC File Explorer";
             this.Load += new System.EventHandler(this.Form1_Load);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.Form1_KeyDown);
-            this.KeyPreview = true;
             this.Resize += new System.EventHandler(this.Form1_Resize);
             this.panel3.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.iconPictureBox7)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.iconPictureBox8)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.iconPictureBox4)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.iconPictureBox3)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.iconPictureBox1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.iconPictureBox2)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.ButtonDelete)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.ButtonPaste)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.ButtonCopy)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.ButtonForward)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.ButtonBack)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.ButtonReturn)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.ButtonCut)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -291,14 +300,14 @@
         private FontAwesome.Sharp.IconPictureBox ButtonReturn;
         private FontAwesome.Sharp.IconPictureBox ButtonForward;
         private FontAwesome.Sharp.IconPictureBox ButtonBack;
-        private FontAwesome.Sharp.IconPictureBox iconPictureBox3;
-        private FontAwesome.Sharp.IconPictureBox iconPictureBox1;
-        private FontAwesome.Sharp.IconPictureBox iconPictureBox2;
+        private FontAwesome.Sharp.IconPictureBox ButtonDelete;
+        private FontAwesome.Sharp.IconPictureBox ButtonPaste;
+        private FontAwesome.Sharp.IconPictureBox ButtonCopy;
         private System.Windows.Forms.Panel panel4;
         private System.Windows.Forms.Panel panel5;
         private FontAwesome.Sharp.IconPictureBox iconPictureBox7;
         private FontAwesome.Sharp.IconPictureBox iconPictureBox8;
-        private FontAwesome.Sharp.IconPictureBox iconPictureBox4;
+        private FontAwesome.Sharp.IconPictureBox ButtonCut;
     }
 }
 
