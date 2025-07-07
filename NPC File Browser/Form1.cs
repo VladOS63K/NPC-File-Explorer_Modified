@@ -242,5 +242,12 @@ namespace NPC_File_Browser
             ButtonDelete.Enabled = false;
             ButtonDelete.IconColor = Color.Gray;
         }
+
+        private void ButtonRefresh_Click(object sender, EventArgs e)
+        {
+            PathsClicked.Clear();
+            DisableUI();
+            LoadItems(CurrentPath);
+        }
     }
 }
