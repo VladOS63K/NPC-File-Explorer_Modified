@@ -49,6 +49,7 @@ namespace NPC_File_Browser
         {
             CurrentPath = @"C:\Users\test\Downloads\Test";
             LoadItems(CurrentPath);
+            LoadSidebar();
 
             ContentPanel.FlowDirection = FlowDirection.TopDown;
             ContentPanel.WrapContents = false;
@@ -248,6 +249,22 @@ namespace NPC_File_Browser
             PathsClicked.Clear();
             DisableUI();
             LoadItems(CurrentPath);
+        }
+
+        private void LoadSidebar()
+        {
+            SidebarPanel.Controls.Clear();
+            AddSidebarFile("Folder 1");
+            AddSidebarFile("Folder 2");
+            AddSidebarFile("Folder 3");
+            AddSidebarFile("Folder 4");
+            AddSidebarFile("Folder 5");
+        }
+
+        private void AddSidebarFile(string folderName)
+        {
+            SidebarFileControl SFC = new SidebarFileControl(folderName);
+            SidebarPanel.Controls.Add(SFC);
         }
     }
 }

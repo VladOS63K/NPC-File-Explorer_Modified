@@ -71,6 +71,12 @@
     <Compile Include="Helper.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SidebarFileControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="SidebarFileControl.Designer.cs">
+      <DependentUpon>SidebarFileControl.cs</DependentUpon>
+    </Compile>
     <EmbeddedResource Include="FileControl.resx">
       <DependentUpon>FileControl.cs</DependentUpon>
     </EmbeddedResource>
@@ -86,6 +92,9 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="SidebarFileControl.resx">
+      <DependentUpon>SidebarFileControl.cs</DependentUpon>
+    </EmbeddedResource>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

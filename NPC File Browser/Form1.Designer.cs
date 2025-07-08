@@ -31,9 +31,15 @@
             this.panel1 = new System.Windows.Forms.Panel();
             this.panel2 = new System.Windows.Forms.Panel();
             this.panel3 = new System.Windows.Forms.Panel();
+            this.panel7 = new System.Windows.Forms.Panel();
+            this.panel8 = new System.Windows.Forms.Panel();
+            this.iconPictureBox2 = new FontAwesome.Sharp.IconPictureBox();
             this.panel5 = new System.Windows.Forms.Panel();
-            this.iconPictureBox7 = new FontAwesome.Sharp.IconPictureBox();
-            this.iconPictureBox8 = new FontAwesome.Sharp.IconPictureBox();
+            this.panel6 = new System.Windows.Forms.Panel();
+            this.iconPictureBox1 = new FontAwesome.Sharp.IconPictureBox();
+            this.ButtonRefresh = new FontAwesome.Sharp.IconPictureBox();
+            this.ButtonRename = new FontAwesome.Sharp.IconPictureBox();
+            this.ButtonStar = new FontAwesome.Sharp.IconPictureBox();
             this.ButtonCut = new FontAwesome.Sharp.IconPictureBox();
             this.panel4 = new System.Windows.Forms.Panel();
             this.ButtonDelete = new FontAwesome.Sharp.IconPictureBox();
@@ -43,16 +49,16 @@
             this.ButtonBack = new FontAwesome.Sharp.IconPictureBox();
             this.ButtonReturn = new FontAwesome.Sharp.IconPictureBox();
             this.ContentPanel = new System.Windows.Forms.FlowLayoutPanel();
-            this.panel6 = new System.Windows.Forms.Panel();
-            this.iconPictureBox1 = new FontAwesome.Sharp.IconPictureBox();
-            this.panel7 = new System.Windows.Forms.Panel();
-            this.panel8 = new System.Windows.Forms.Panel();
-            this.iconPictureBox2 = new FontAwesome.Sharp.IconPictureBox();
-            this.ButtonRefresh = new FontAwesome.Sharp.IconPictureBox();
+            this.SidebarPanel = new System.Windows.Forms.FlowLayoutPanel();
+            this.panel1.SuspendLayout();
             this.panel3.SuspendLayout();
+            this.panel7.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.iconPictureBox2)).BeginInit();
             this.panel5.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.iconPictureBox7)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.iconPictureBox8)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.iconPictureBox1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.ButtonRefresh)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.ButtonRename)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.ButtonStar)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.ButtonCut)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.ButtonDelete)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.ButtonPaste)).BeginInit();
@@ -60,10 +66,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.ButtonForward)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.ButtonBack)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.ButtonReturn)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.iconPictureBox1)).BeginInit();
-            this.panel7.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.iconPictureBox2)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.ButtonRefresh)).BeginInit();
             this.SuspendLayout();
             // 
             // panel1
@@ -71,6 +73,7 @@
             this.panel1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left)));
             this.panel1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(30)))), ((int)(((byte)(30)))));
+            this.panel1.Controls.Add(this.SidebarPanel);
             this.panel1.Location = new System.Drawing.Point(0, 0);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(250, 652);
@@ -93,8 +96,8 @@
             this.panel3.Controls.Add(this.panel7);
             this.panel3.Controls.Add(this.panel5);
             this.panel3.Controls.Add(this.ButtonRefresh);
-            this.panel3.Controls.Add(this.iconPictureBox7);
-            this.panel3.Controls.Add(this.iconPictureBox8);
+            this.panel3.Controls.Add(this.ButtonRename);
+            this.panel3.Controls.Add(this.ButtonStar);
             this.panel3.Controls.Add(this.ButtonCut);
             this.panel3.Controls.Add(this.panel4);
             this.panel3.Controls.Add(this.ButtonDelete);
@@ -108,6 +111,40 @@
             this.panel3.Size = new System.Drawing.Size(984, 40);
             this.panel3.TabIndex = 2;
             // 
+            // panel7
+            // 
+            this.panel7.BackColor = System.Drawing.Color.White;
+            this.panel7.Controls.Add(this.panel8);
+            this.panel7.Controls.Add(this.iconPictureBox2);
+            this.panel7.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.panel7.Location = new System.Drawing.Point(87, 6);
+            this.panel7.Name = "panel7";
+            this.panel7.Size = new System.Drawing.Size(1, 28);
+            this.panel7.TabIndex = 16;
+            // 
+            // panel8
+            // 
+            this.panel8.BackColor = System.Drawing.Color.White;
+            this.panel8.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.panel8.Location = new System.Drawing.Point(63, 0);
+            this.panel8.Name = "panel8";
+            this.panel8.Size = new System.Drawing.Size(1, 28);
+            this.panel8.TabIndex = 13;
+            // 
+            // iconPictureBox2
+            // 
+            this.iconPictureBox2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(30)))), ((int)(((byte)(30)))));
+            this.iconPictureBox2.IconChar = FontAwesome.Sharp.IconChar.Star;
+            this.iconPictureBox2.IconColor = System.Drawing.Color.White;
+            this.iconPictureBox2.IconFont = FontAwesome.Sharp.IconFont.Auto;
+            this.iconPictureBox2.IconSize = 23;
+            this.iconPictureBox2.Location = new System.Drawing.Point(73, 0);
+            this.iconPictureBox2.Name = "iconPictureBox2";
+            this.iconPictureBox2.Size = new System.Drawing.Size(23, 28);
+            this.iconPictureBox2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.iconPictureBox2.TabIndex = 12;
+            this.iconPictureBox2.TabStop = false;
+            // 
             // panel5
             // 
             this.panel5.BackColor = System.Drawing.Color.White;
@@ -119,33 +156,71 @@
             this.panel5.Size = new System.Drawing.Size(1, 28);
             this.panel5.TabIndex = 11;
             // 
-            // iconPictureBox7
+            // panel6
             // 
-            this.iconPictureBox7.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(30)))), ((int)(((byte)(30)))));
-            this.iconPictureBox7.IconChar = FontAwesome.Sharp.IconChar.Keyboard;
-            this.iconPictureBox7.IconColor = System.Drawing.Color.White;
-            this.iconPictureBox7.IconFont = FontAwesome.Sharp.IconFont.Auto;
-            this.iconPictureBox7.IconSize = 23;
-            this.iconPictureBox7.Location = new System.Drawing.Point(273, 6);
-            this.iconPictureBox7.Name = "iconPictureBox7";
-            this.iconPictureBox7.Size = new System.Drawing.Size(23, 28);
-            this.iconPictureBox7.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.iconPictureBox7.TabIndex = 9;
-            this.iconPictureBox7.TabStop = false;
+            this.panel6.BackColor = System.Drawing.Color.White;
+            this.panel6.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.panel6.Location = new System.Drawing.Point(63, 0);
+            this.panel6.Name = "panel6";
+            this.panel6.Size = new System.Drawing.Size(1, 28);
+            this.panel6.TabIndex = 13;
             // 
-            // iconPictureBox8
+            // iconPictureBox1
             // 
-            this.iconPictureBox8.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(30)))), ((int)(((byte)(30)))));
-            this.iconPictureBox8.IconChar = FontAwesome.Sharp.IconChar.Star;
-            this.iconPictureBox8.IconColor = System.Drawing.Color.White;
-            this.iconPictureBox8.IconFont = FontAwesome.Sharp.IconFont.Auto;
-            this.iconPictureBox8.IconSize = 23;
-            this.iconPictureBox8.Location = new System.Drawing.Point(250, 6);
-            this.iconPictureBox8.Name = "iconPictureBox8";
-            this.iconPictureBox8.Size = new System.Drawing.Size(23, 28);
-            this.iconPictureBox8.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.iconPictureBox8.TabIndex = 8;
-            this.iconPictureBox8.TabStop = false;
+            this.iconPictureBox1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(30)))), ((int)(((byte)(30)))));
+            this.iconPictureBox1.IconChar = FontAwesome.Sharp.IconChar.Star;
+            this.iconPictureBox1.IconColor = System.Drawing.Color.White;
+            this.iconPictureBox1.IconFont = FontAwesome.Sharp.IconFont.Auto;
+            this.iconPictureBox1.IconSize = 23;
+            this.iconPictureBox1.Location = new System.Drawing.Point(73, 0);
+            this.iconPictureBox1.Name = "iconPictureBox1";
+            this.iconPictureBox1.Size = new System.Drawing.Size(23, 28);
+            this.iconPictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.iconPictureBox1.TabIndex = 12;
+            this.iconPictureBox1.TabStop = false;
+            // 
+            // ButtonRefresh
+            // 
+            this.ButtonRefresh.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(30)))), ((int)(((byte)(30)))));
+            this.ButtonRefresh.IconChar = FontAwesome.Sharp.IconChar.Repeat;
+            this.ButtonRefresh.IconColor = System.Drawing.Color.White;
+            this.ButtonRefresh.IconFont = FontAwesome.Sharp.IconFont.Auto;
+            this.ButtonRefresh.IconSize = 23;
+            this.ButtonRefresh.Location = new System.Drawing.Point(96, 6);
+            this.ButtonRefresh.Name = "ButtonRefresh";
+            this.ButtonRefresh.Size = new System.Drawing.Size(23, 28);
+            this.ButtonRefresh.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.ButtonRefresh.TabIndex = 14;
+            this.ButtonRefresh.TabStop = false;
+            this.ButtonRefresh.Click += new System.EventHandler(this.ButtonRefresh_Click);
+            // 
+            // ButtonRename
+            // 
+            this.ButtonRename.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(30)))), ((int)(((byte)(30)))));
+            this.ButtonRename.IconChar = FontAwesome.Sharp.IconChar.Keyboard;
+            this.ButtonRename.IconColor = System.Drawing.Color.White;
+            this.ButtonRename.IconFont = FontAwesome.Sharp.IconFont.Auto;
+            this.ButtonRename.IconSize = 23;
+            this.ButtonRename.Location = new System.Drawing.Point(273, 6);
+            this.ButtonRename.Name = "ButtonRename";
+            this.ButtonRename.Size = new System.Drawing.Size(23, 28);
+            this.ButtonRename.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.ButtonRename.TabIndex = 9;
+            this.ButtonRename.TabStop = false;
+            // 
+            // ButtonStar
+            // 
+            this.ButtonStar.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(30)))), ((int)(((byte)(30)))));
+            this.ButtonStar.IconChar = FontAwesome.Sharp.IconChar.Star;
+            this.ButtonStar.IconColor = System.Drawing.Color.White;
+            this.ButtonStar.IconFont = FontAwesome.Sharp.IconFont.Auto;
+            this.ButtonStar.IconSize = 23;
+            this.ButtonStar.Location = new System.Drawing.Point(250, 6);
+            this.ButtonStar.Name = "ButtonStar";
+            this.ButtonStar.Size = new System.Drawing.Size(23, 28);
+            this.ButtonStar.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.ButtonStar.TabIndex = 8;
+            this.ButtonStar.TabStop = false;
             // 
             // ButtonCut
             // 
@@ -273,77 +348,12 @@
             this.ContentPanel.Size = new System.Drawing.Size(983, 550);
             this.ContentPanel.TabIndex = 3;
             // 
-            // panel6
+            // SidebarPanel
             // 
-            this.panel6.BackColor = System.Drawing.Color.White;
-            this.panel6.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.panel6.Location = new System.Drawing.Point(63, 0);
-            this.panel6.Name = "panel6";
-            this.panel6.Size = new System.Drawing.Size(1, 28);
-            this.panel6.TabIndex = 13;
-            // 
-            // iconPictureBox1
-            // 
-            this.iconPictureBox1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(30)))), ((int)(((byte)(30)))));
-            this.iconPictureBox1.IconChar = FontAwesome.Sharp.IconChar.Star;
-            this.iconPictureBox1.IconColor = System.Drawing.Color.White;
-            this.iconPictureBox1.IconFont = FontAwesome.Sharp.IconFont.Auto;
-            this.iconPictureBox1.IconSize = 23;
-            this.iconPictureBox1.Location = new System.Drawing.Point(73, 0);
-            this.iconPictureBox1.Name = "iconPictureBox1";
-            this.iconPictureBox1.Size = new System.Drawing.Size(23, 28);
-            this.iconPictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.iconPictureBox1.TabIndex = 12;
-            this.iconPictureBox1.TabStop = false;
-            // 
-            // panel7
-            // 
-            this.panel7.BackColor = System.Drawing.Color.White;
-            this.panel7.Controls.Add(this.panel8);
-            this.panel7.Controls.Add(this.iconPictureBox2);
-            this.panel7.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.panel7.Location = new System.Drawing.Point(87, 6);
-            this.panel7.Name = "panel7";
-            this.panel7.Size = new System.Drawing.Size(1, 28);
-            this.panel7.TabIndex = 16;
-            // 
-            // panel8
-            // 
-            this.panel8.BackColor = System.Drawing.Color.White;
-            this.panel8.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.panel8.Location = new System.Drawing.Point(63, 0);
-            this.panel8.Name = "panel8";
-            this.panel8.Size = new System.Drawing.Size(1, 28);
-            this.panel8.TabIndex = 13;
-            // 
-            // iconPictureBox2
-            // 
-            this.iconPictureBox2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(30)))), ((int)(((byte)(30)))));
-            this.iconPictureBox2.IconChar = FontAwesome.Sharp.IconChar.Star;
-            this.iconPictureBox2.IconColor = System.Drawing.Color.White;
-            this.iconPictureBox2.IconFont = FontAwesome.Sharp.IconFont.Auto;
-            this.iconPictureBox2.IconSize = 23;
-            this.iconPictureBox2.Location = new System.Drawing.Point(73, 0);
-            this.iconPictureBox2.Name = "iconPictureBox2";
-            this.iconPictureBox2.Size = new System.Drawing.Size(23, 28);
-            this.iconPictureBox2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.iconPictureBox2.TabIndex = 12;
-            this.iconPictureBox2.TabStop = false;
-            // 
-            // ButtonRefresh
-            // 
-            this.ButtonRefresh.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(30)))), ((int)(((byte)(30)))));
-            this.ButtonRefresh.IconChar = FontAwesome.Sharp.IconChar.Repeat;
-            this.ButtonRefresh.IconColor = System.Drawing.Color.White;
-            this.ButtonRefresh.IconFont = FontAwesome.Sharp.IconFont.Auto;
-            this.ButtonRefresh.IconSize = 23;
-            this.ButtonRefresh.Location = new System.Drawing.Point(96, 6);
-            this.ButtonRefresh.Name = "ButtonRefresh";
-            this.ButtonRefresh.Size = new System.Drawing.Size(23, 28);
-            this.ButtonRefresh.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.ButtonRefresh.TabIndex = 14;
-            this.ButtonRefresh.TabStop = false;
-            this.ButtonRefresh.Click += new System.EventHandler(this.ButtonRefresh_Click);
+            this.SidebarPanel.Location = new System.Drawing.Point(7, 29);
+            this.SidebarPanel.Name = "SidebarPanel";
+            this.SidebarPanel.Size = new System.Drawing.Size(236, 611);
+            this.SidebarPanel.TabIndex = 0;
             // 
             // Form1
             // 
@@ -364,10 +374,15 @@
             this.Load += new System.EventHandler(this.Form1_Load);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.Form1_KeyDown);
             this.Resize += new System.EventHandler(this.Form1_Resize);
+            this.panel1.ResumeLayout(false);
             this.panel3.ResumeLayout(false);
+            this.panel7.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.iconPictureBox2)).EndInit();
             this.panel5.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.iconPictureBox7)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.iconPictureBox8)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.iconPictureBox1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.ButtonRefresh)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.ButtonRename)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.ButtonStar)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.ButtonCut)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.ButtonDelete)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.ButtonPaste)).EndInit();
@@ -375,10 +390,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.ButtonForward)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.ButtonBack)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.ButtonReturn)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.iconPictureBox1)).EndInit();
-            this.panel7.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.iconPictureBox2)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.ButtonRefresh)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -397,8 +408,8 @@
         private FontAwesome.Sharp.IconPictureBox ButtonCopy;
         private System.Windows.Forms.Panel panel4;
         private System.Windows.Forms.Panel panel5;
-        private FontAwesome.Sharp.IconPictureBox iconPictureBox7;
-        private FontAwesome.Sharp.IconPictureBox iconPictureBox8;
+        private FontAwesome.Sharp.IconPictureBox ButtonRename;
+        private FontAwesome.Sharp.IconPictureBox ButtonStar;
         private FontAwesome.Sharp.IconPictureBox ButtonCut;
         private System.Windows.Forms.Panel panel7;
         private System.Windows.Forms.Panel panel8;
@@ -406,6 +417,7 @@
         private System.Windows.Forms.Panel panel6;
         private FontAwesome.Sharp.IconPictureBox iconPictureBox1;
         private FontAwesome.Sharp.IconPictureBox ButtonRefresh;
+        private System.Windows.Forms.FlowLayoutPanel SidebarPanel;
     }
 }
 
