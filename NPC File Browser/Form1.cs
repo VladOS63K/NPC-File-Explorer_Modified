@@ -254,17 +254,65 @@ namespace NPC_File_Browser
         private void LoadSidebar()
         {
             SidebarPanel.Controls.Clear();
+
+            //Add common folders
             AddSidebarFile("Folder 1");
             AddSidebarFile("Folder 2");
             AddSidebarFile("Folder 3");
             AddSidebarFile("Folder 4");
             AddSidebarFile("Folder 5");
+
+            AddSideBarSeperator();
+
+            try //Add drives
+            {
+                DriveInfo[] drives = DriveInfo.GetDrives();
+
+                foreach (DriveInfo drive in drives)
+                {
+                    string DriveName = drive.Name.ToString().Remove(2, 1);
+                    AddSidebarDrive("Drive " + DriveName, DriveName);
+                }
+            }
+            catch { }
+
+            AddSideBarSeperator();
+            
+            //Add favourites
+            AddSidebarFile("Folder 1");
+            AddSidebarFile("Folder 2");
+            AddSidebarFile("Folder 3");
         }
 
         private void AddSidebarFile(string folderName)
         {
             SidebarFileControl SFC = new SidebarFileControl(folderName);
             SidebarPanel.Controls.Add(SFC);
+        }
+
+        private void AddSidebarDrive(string folderName, string drive)
+        {
+            SideBarDriveControl SDC = new SideBarDriveControl(folderName, drive);
+            SidebarPanel.Controls.Add(SDC);
+        }
+
+        private void AddSideBarSeperator()
+        {
+            Panel panel1 = new Panel();
+            panel1.Size = new Size(236, 5);
+            panel1.BackColor = Color.Transparent;
+
+            Panel panel2 = new Panel();
+            panel2.Size = new Size(236, 2);
+            panel2.BackColor = Color.White;
+
+            Panel panel3 = new Panel();
+            panel3.Size = new Size(236, 5);
+            panel3.BackColor = Color.Transparent;
+
+            SidebarPanel.Controls.Add(panel1);
+            SidebarPanel.Controls.Add(panel2);
+            SidebarPanel.Controls.Add(panel3);
         }
     }
 }

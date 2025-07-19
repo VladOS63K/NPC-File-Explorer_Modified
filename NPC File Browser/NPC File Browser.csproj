@@ -71,6 +71,12 @@
     <Compile Include="Helper.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SideBarDriveControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="SideBarDriveControl.Designer.cs">
+      <DependentUpon>SideBarDriveControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="SidebarFileControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -92,6 +98,9 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="SideBarDriveControl.resx">
+      <DependentUpon>SideBarDriveControl.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="SidebarFileControl.resx">
       <DependentUpon>SidebarFileControl.cs</DependentUpon>
     </EmbeddedResource>
