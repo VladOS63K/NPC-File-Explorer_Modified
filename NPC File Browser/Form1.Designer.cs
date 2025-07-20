@@ -370,11 +370,14 @@
             // ContentPanel
             // 
             this.ContentPanel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.ContentPanel.AutoScroll = true;
             this.ContentPanel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(27)))), ((int)(((byte)(27)))), ((int)(((byte)(27)))));
+            this.ContentPanel.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
             this.ContentPanel.Location = new System.Drawing.Point(250, 100);
             this.ContentPanel.Name = "ContentPanel";
             this.ContentPanel.Size = new System.Drawing.Size(983, 550);
             this.ContentPanel.TabIndex = 3;
+            this.ContentPanel.WrapContents = false;
             // 
             // Form1
             // 

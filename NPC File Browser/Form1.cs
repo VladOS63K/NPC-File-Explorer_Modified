@@ -23,16 +23,17 @@ namespace NPC_File_Browser
         [DllImport("dwmapi.dll")]
         static extern int DwmSetWindowAttribute(IntPtr hwnd, DwmWindowAttribute attr, ref int attrValue, int attrSize);
 
-        string CurrentPath;
         List<string> PathsClicked = new List<string>();
+        string CurrentPath;
         string LastPathClicked;
+        string PinnedFilePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "NPC_File_Browser", "pinned_folders.txt");
 
         public Form1()
         {
             InitializeComponent();
         }
 
-        private void EnableControlDarkMode(Control control)
+        private void EnableControlDarkMode(Control control) //Code from stack overflow
         {
             int trueValue = 1;
             SetWindowTheme(control.Handle, "DarkMode_Explorer", null);
@@ -52,10 +53,6 @@ namespace NPC_File_Browser
             CurrentPath = @"C:\Users\test\Downloads\Test";
             LoadItems(CurrentPath);
             LoadSidebar();
-
-            ContentPanel.FlowDirection = FlowDirection.TopDown;
-            ContentPanel.WrapContents = false;
-            ContentPanel.AutoScroll = true;
             EnableControlDarkMode(ContentPanel);
         }
 
@@ -148,10 +145,7 @@ namespace NPC_File_Browser
 
         private void CopyDirectories(List<string> directories)
         {
-            if (directories == null || directories.Count == 0)
-            {
-                return;
-            }
+            if (directories == null || directories.Count == 0) { return; }
 
             StringCollection paths = new StringCollection();
             paths.AddRange(directories.ToArray());
@@ -192,11 +186,6 @@ namespace NPC_File_Browser
                         MessageBox.Show("Error pasting: " + ex.Message);
                     }
                 }
-            }
-
-            else
-            {
-                MessageBox.Show("Clipboard does not contain any files or folders.");
             }
         }
 
@@ -286,37 +275,30 @@ namespace NPC_File_Browser
 
             AddSideBarSeperator();
 
-            try //Add drives
-            {
-                DriveInfo[] drives = DriveInfo.GetDrives();
-
-                foreach (DriveInfo drive in drives)
+            //Add drives
+            try
+            { 
+                foreach (DriveInfo drive in DriveInfo.GetDrives())
                 {
-                    string DriveName = drive.Name.ToString().Remove(2, 1);
-                    AddSidebarDrive("Drive " + DriveName, DriveName);
+                    AddSidebarDrive(drive.Name.ToString().Remove(2, 1));
                 }
             }
             catch { }
 
             AddSideBarSeperator();
 
-            string filePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "NPC_File_Browser", "pinned_folders.txt");
-
-            if (File.Exists(filePath))
+            //Add pinned folders
+            foreach (string path in File.ReadAllLines(PinnedFilePath))
             {
-                string[] paths = File.ReadAllLines(filePath);
-                foreach (string path in paths)
+                if (!string.IsNullOrWhiteSpace(path) && Directory.Exists(path))
                 {
-                    if (!string.IsNullOrWhiteSpace(path) && Directory.Exists(path))
+                    string folderName = Path.GetFileName(path);
+                    if (string.IsNullOrEmpty(folderName))
                     {
-                        string folderName = Path.GetFileName(path);
-                        if (string.IsNullOrEmpty(folderName))
-                        {
-                            folderName = path;
-                        }
-
-                        AddSidebarFile(folderName, path);
+                        folderName = path;
                     }
+
+                    AddSidebarFile(folderName, path);
                 }
             }
         }
@@ -329,9 +311,9 @@ namespace NPC_File_Browser
             SidebarPanel.Controls.Add(SFC);
         }
 
-        private void AddSidebarDrive(string folderName, string drive)
+        private void AddSidebarDrive(string drive)
         {
-            SideBarDriveControl SDC = new SideBarDriveControl(folderName, drive);
+            SideBarDriveControl SDC = new SideBarDriveControl(drive);
             SidebarPanel.Controls.Add(SDC);
         }
 
@@ -340,11 +322,9 @@ namespace NPC_File_Browser
             Panel panel1 = new Panel();
             panel1.Size = new Size(236, 5);
             panel1.BackColor = Color.Transparent;
-
             Panel panel2 = new Panel();
             panel2.Size = new Size(236, 2);
             panel2.BackColor = Color.White;
-
             Panel panel3 = new Panel();
             panel3.Size = new Size(236, 5);
             panel3.BackColor = Color.Transparent;
@@ -354,67 +334,33 @@ namespace NPC_File_Browser
             SidebarPanel.Controls.Add(panel3);
         }
 
-        private static void AddPinnedFolder(string folderPath)
+        private void AddPinnedFolder(string folderPath)
         {
-            string filePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "NPC_File_Browser", "pinned_folders.txt");
+            Directory.CreateDirectory(Path.GetDirectoryName(PinnedFilePath));
 
-            Directory.CreateDirectory(Path.GetDirectoryName(filePath));
-
-            if (File.Exists(filePath))
+            if (File.Exists(PinnedFilePath))
             {
-                if (File.ReadAllLines(filePath).Any(path => path.Equals(folderPath, StringComparison.OrdinalIgnoreCase)))
-                {
-                    return;
-                } 
+                if (File.ReadAllLines(PinnedFilePath).Any(path => path.Equals(folderPath, StringComparison.OrdinalIgnoreCase))) { return; } 
             }
 
-            File.AppendAllText(filePath, folderPath + Environment.NewLine);
+            File.AppendAllText(PinnedFilePath, folderPath + Environment.NewLine);
         }
 
-        public static void ReadPinnedFolders()
+        private bool IsPathPinned(string folderPath)
         {
-            string filePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "NPC_File_Browser", "pinned_folders.txt");
-
-            if (File.Exists(filePath))
+            if (File.Exists(PinnedFilePath))
             {
-                string[] paths = File.ReadAllLines(filePath);
-                foreach (string path in paths)
-                {
-                    if (!string.IsNullOrWhiteSpace(path))
-                    {
-                        Console.WriteLine(path);
-                    }
-                }
-            }
-            else
-            {
-                Console.WriteLine("No pinned folders file found.");
-            }
-        }
-
-        private static bool IsPathPinned(string folderPath)
-        {
-            string filePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "NPC_File_Browser", "pinned_folders.txt");
-
-            if (File.Exists(filePath))
-            {
-                string[] paths = File.ReadAllLines(filePath);
-                return paths.Any(path => path.Equals(folderPath, StringComparison.OrdinalIgnoreCase));
+                return File.ReadAllLines(PinnedFilePath).Any(path => path.Equals(folderPath, StringComparison.OrdinalIgnoreCase));
             }
 
             return false;
         }
 
-        private static void RemovePinnedFolder(string folderPath)
+        private void RemovePinnedFolder(string folderPath)
         {
-            string filePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "NPC_File_Browser", "pinned_folders.txt");
-
-            if (File.Exists(filePath))
+            if (File.Exists(PinnedFilePath))
             {
-                string[] paths = File.ReadAllLines(filePath);
-                var updatedPaths = paths.Where(path => !path.Equals(folderPath, StringComparison.OrdinalIgnoreCase)).ToArray();
-
-                File.WriteAllLines(filePath, updatedPaths);
+                File.WriteAllLines(PinnedFilePath, File.ReadAllLines(PinnedFilePath).Where(path => !path.Equals(folderPath, StringComparison.OrdinalIgnoreCase)).ToArray());
             }
         }
 

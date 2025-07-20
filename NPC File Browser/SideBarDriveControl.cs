@@ -13,11 +13,11 @@ namespace NPC_File_Browser
 {
     public partial class SideBarDriveControl: UserControl
     {
-        public SideBarDriveControl(string fileName, string drive)
+        public SideBarDriveControl(string drive)
         {
             InitializeComponent();
 
-            FileNameLabel.Text = fileName;
+            FileNameLabel.Text = "Drive " + drive;
             UpdateDiskSpace(drive);
         }
 
