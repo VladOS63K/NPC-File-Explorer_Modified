@@ -29,7 +29,9 @@
         private void InitializeComponent()
         {
             this.panel1 = new System.Windows.Forms.Panel();
+            this.SidebarPanel = new System.Windows.Forms.FlowLayoutPanel();
             this.panel2 = new System.Windows.Forms.Panel();
+            this.PathTextbox = new ModernUI.Controls.ModernTextBox();
             this.panel3 = new System.Windows.Forms.Panel();
             this.panel7 = new System.Windows.Forms.Panel();
             this.panel8 = new System.Windows.Forms.Panel();
@@ -49,8 +51,6 @@
             this.ButtonBack = new FontAwesome.Sharp.IconPictureBox();
             this.ButtonReturn = new FontAwesome.Sharp.IconPictureBox();
             this.ContentPanel = new System.Windows.Forms.FlowLayoutPanel();
-            this.SidebarPanel = new System.Windows.Forms.FlowLayoutPanel();
-            this.PathTextbox = new ModernUI.Controls.ModernTextBox();
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
             this.panel3.SuspendLayout();
@@ -81,6 +81,13 @@
             this.panel1.Size = new System.Drawing.Size(250, 652);
             this.panel1.TabIndex = 0;
             // 
+            // SidebarPanel
+            // 
+            this.SidebarPanel.Location = new System.Drawing.Point(7, 29);
+            this.SidebarPanel.Name = "SidebarPanel";
+            this.SidebarPanel.Size = new System.Drawing.Size(236, 611);
+            this.SidebarPanel.TabIndex = 0;
+            // 
             // panel2
             // 
             this.panel2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(35)))), ((int)(((byte)(35)))));
@@ -90,6 +97,23 @@
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(1234, 60);
             this.panel2.TabIndex = 1;
+            // 
+            // PathTextbox
+            // 
+            this.PathTextbox.BackColor = System.Drawing.Color.Transparent;
+            this.PathTextbox.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(45)))), ((int)(((byte)(45)))), ((int)(((byte)(48)))));
+            this.PathTextbox.BorderColor = System.Drawing.Color.Transparent;
+            this.PathTextbox.BorderRadius = 10;
+            this.PathTextbox.Location = new System.Drawing.Point(260, 12);
+            this.PathTextbox.Multiline = false;
+            this.PathTextbox.Name = "PathTextbox";
+            this.PathTextbox.Padding = new System.Windows.Forms.Padding(10);
+            this.PathTextbox.PlaceholderColor = System.Drawing.Color.DimGray;
+            this.PathTextbox.PlaceholderText = "Path";
+            this.PathTextbox.Size = new System.Drawing.Size(729, 36);
+            this.PathTextbox.TabIndex = 0;
+            this.PathTextbox.TextBoxText = "";
+            this.PathTextbox.TextColor = System.Drawing.Color.White;
             // 
             // panel3
             // 
@@ -216,7 +240,7 @@
             this.ButtonStar.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(30)))), ((int)(((byte)(30)))));
             this.ButtonStar.IconChar = FontAwesome.Sharp.IconChar.Star;
             this.ButtonStar.IconColor = System.Drawing.Color.White;
-            this.ButtonStar.IconFont = FontAwesome.Sharp.IconFont.Auto;
+            this.ButtonStar.IconFont = FontAwesome.Sharp.IconFont.Regular;
             this.ButtonStar.IconSize = 23;
             this.ButtonStar.Location = new System.Drawing.Point(250, 6);
             this.ButtonStar.Name = "ButtonStar";
@@ -224,6 +248,7 @@
             this.ButtonStar.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.ButtonStar.TabIndex = 8;
             this.ButtonStar.TabStop = false;
+            this.ButtonStar.Click += new System.EventHandler(this.ButtonStar_Click);
             // 
             // ButtonCut
             // 
@@ -350,30 +375,6 @@
             this.ContentPanel.Name = "ContentPanel";
             this.ContentPanel.Size = new System.Drawing.Size(983, 550);
             this.ContentPanel.TabIndex = 3;
-            // 
-            // SidebarPanel
-            // 
-            this.SidebarPanel.Location = new System.Drawing.Point(7, 29);
-            this.SidebarPanel.Name = "SidebarPanel";
-            this.SidebarPanel.Size = new System.Drawing.Size(236, 611);
-            this.SidebarPanel.TabIndex = 0;
-            // 
-            // PathTextbox
-            // 
-            this.PathTextbox.BackColor = System.Drawing.Color.Transparent;
-            this.PathTextbox.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(45)))), ((int)(((byte)(45)))), ((int)(((byte)(48)))));
-            this.PathTextbox.BorderColor = System.Drawing.Color.Transparent;
-            this.PathTextbox.BorderRadius = 10;
-            this.PathTextbox.Location = new System.Drawing.Point(260, 12);
-            this.PathTextbox.Multiline = false;
-            this.PathTextbox.Name = "PathTextbox";
-            this.PathTextbox.Padding = new System.Windows.Forms.Padding(10);
-            this.PathTextbox.PlaceholderColor = System.Drawing.Color.DimGray;
-            this.PathTextbox.PlaceholderText = "Path";
-            this.PathTextbox.Size = new System.Drawing.Size(729, 36);
-            this.PathTextbox.TabIndex = 0;
-            this.PathTextbox.TextBoxText = "";
-            this.PathTextbox.TextColor = System.Drawing.Color.White;
             // 
             // Form1
             // 

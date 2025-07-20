@@ -5,6 +5,7 @@ using System.IO;
 using System.Runtime.InteropServices;
 using System;
 using System.Collections.Specialized;
+using System.Linq;
 
 namespace NPC_File_Browser
 {
@@ -24,6 +25,7 @@ namespace NPC_File_Browser
 
         string CurrentPath;
         List<string> PathsClicked = new List<string>();
+        string LastPathClicked;
 
         public Form1()
         {
@@ -92,7 +94,23 @@ namespace NPC_File_Browser
             if (PathsClicked.Contains(directory) == false) //Fixes adding the same directory twice
             {
                 PathsClicked.Add(directory);
+                LastPathClicked = directory;
+
+                UpdateStarButton();
                 EnableUI();
+            }
+        }
+
+        private void UpdateStarButton()
+        {
+            if (IsPathPinned(LastPathClicked))
+            {
+                ButtonStar.IconFont = FontAwesome.Sharp.IconFont.Solid;
+            }
+
+            else
+            {
+                ButtonStar.IconFont = FontAwesome.Sharp.IconFont.Regular;
             }
         }
 
@@ -103,7 +121,11 @@ namespace NPC_File_Browser
 
         private void ButtonReturn_Click(object sender, EventArgs e)
         {
-            LoadItems(Directory.GetParent(CurrentPath).FullName);
+            try
+            {
+                LoadItems(Directory.GetParent(CurrentPath).FullName);
+            }
+            catch { }
         }
 
         private void Form1_KeyDown(object sender, System.Windows.Forms.KeyEventArgs e)
@@ -119,6 +141,7 @@ namespace NPC_File_Browser
                 }
 
                 PathsClicked.Clear();
+                ButtonStar.IconFont = FontAwesome.Sharp.IconFont.Regular;
                 DisableUI();
             }
         }
@@ -256,11 +279,10 @@ namespace NPC_File_Browser
             SidebarPanel.Controls.Clear();
 
             //Add common folders
-            AddSidebarFile("Folder 1");
-            AddSidebarFile("Folder 2");
-            AddSidebarFile("Folder 3");
-            AddSidebarFile("Folder 4");
-            AddSidebarFile("Folder 5");
+            AddSidebarFile("Desktop", Environment.GetFolderPath(Environment.SpecialFolder.Desktop));
+            AddSidebarFile("Downloads", Environment.GetFolderPath(Environment.SpecialFolder.UserProfile) + @"\Downloads");
+            AddSidebarFile("Documents", Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments));
+            AddSidebarFile("Videos", Environment.GetFolderPath(Environment.SpecialFolder.MyVideos));
 
             AddSideBarSeperator();
 
@@ -277,16 +299,33 @@ namespace NPC_File_Browser
             catch { }
 
             AddSideBarSeperator();
-            
-            //Add favourites
-            AddSidebarFile("Folder 1");
-            AddSidebarFile("Folder 2");
-            AddSidebarFile("Folder 3");
+
+            string filePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "NPC_File_Browser", "pinned_folders.txt");
+
+            if (File.Exists(filePath))
+            {
+                string[] paths = File.ReadAllLines(filePath);
+                foreach (string path in paths)
+                {
+                    if (!string.IsNullOrWhiteSpace(path) && Directory.Exists(path))
+                    {
+                        string folderName = Path.GetFileName(path);
+                        if (string.IsNullOrEmpty(folderName))
+                        {
+                            folderName = path;
+                        }
+
+                        AddSidebarFile(folderName, path);
+                    }
+                }
+            }
         }
 
-        private void AddSidebarFile(string folderName)
+        private void AddSidebarFile(string folderName, string folderPath)
         {
             SidebarFileControl SFC = new SidebarFileControl(folderName);
+            SFC.FolderPath = folderPath;
+            SFC.FileDoubleClicked += (sender, path) => { LoadItems(folderPath); };
             SidebarPanel.Controls.Add(SFC);
         }
 
@@ -313,6 +352,86 @@ namespace NPC_File_Browser
             SidebarPanel.Controls.Add(panel1);
             SidebarPanel.Controls.Add(panel2);
             SidebarPanel.Controls.Add(panel3);
+        }
+
+        private static void AddPinnedFolder(string folderPath)
+        {
+            string filePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "NPC_File_Browser", "pinned_folders.txt");
+
+            Directory.CreateDirectory(Path.GetDirectoryName(filePath));
+
+            if (File.Exists(filePath))
+            {
+                if (File.ReadAllLines(filePath).Any(path => path.Equals(folderPath, StringComparison.OrdinalIgnoreCase)))
+                {
+                    return;
+                } 
+            }
+
+            File.AppendAllText(filePath, folderPath + Environment.NewLine);
+        }
+
+        public static void ReadPinnedFolders()
+        {
+            string filePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "NPC_File_Browser", "pinned_folders.txt");
+
+            if (File.Exists(filePath))
+            {
+                string[] paths = File.ReadAllLines(filePath);
+                foreach (string path in paths)
+                {
+                    if (!string.IsNullOrWhiteSpace(path))
+                    {
+                        Console.WriteLine(path);
+                    }
+                }
+            }
+            else
+            {
+                Console.WriteLine("No pinned folders file found.");
+            }
+        }
+
+        private static bool IsPathPinned(string folderPath)
+        {
+            string filePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "NPC_File_Browser", "pinned_folders.txt");
+
+            if (File.Exists(filePath))
+            {
+                string[] paths = File.ReadAllLines(filePath);
+                return paths.Any(path => path.Equals(folderPath, StringComparison.OrdinalIgnoreCase));
+            }
+
+            return false;
+        }
+
+        private static void RemovePinnedFolder(string folderPath)
+        {
+            string filePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "NPC_File_Browser", "pinned_folders.txt");
+
+            if (File.Exists(filePath))
+            {
+                string[] paths = File.ReadAllLines(filePath);
+                var updatedPaths = paths.Where(path => !path.Equals(folderPath, StringComparison.OrdinalIgnoreCase)).ToArray();
+
+                File.WriteAllLines(filePath, updatedPaths);
+            }
+        }
+
+        private void ButtonStar_Click(object sender, EventArgs e)
+        {
+            if (IsPathPinned(LastPathClicked))
+            {
+                RemovePinnedFolder(LastPathClicked);
+            }
+
+            else
+            {
+                AddPinnedFolder(LastPathClicked);
+            }
+
+            UpdateStarButton();
+            LoadSidebar();
         }
     }
 }
