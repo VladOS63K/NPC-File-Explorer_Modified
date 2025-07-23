@@ -52,6 +52,7 @@ namespace NPC_File_Browser
         {
             CurrentPath = @"C:\Users\test\Downloads\Test";
             LoadItems(CurrentPath);
+            PathTextbox.TextBoxText = CurrentPath;
             LoadSidebar();
             EnableControlDarkMode(ContentPanel);
         }
@@ -261,6 +262,7 @@ namespace NPC_File_Browser
             PathsClicked.Clear();
             DisableUI();
             LoadItems(CurrentPath);
+            PathTextbox.TextBoxText = CurrentPath;
         }
 
         private void LoadSidebar()
