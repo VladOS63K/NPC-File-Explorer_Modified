@@ -207,7 +207,7 @@ namespace NPC_File_Browser
             }
         }
 
-        private void Form1_KeyDown(object sender, System.Windows.Forms.KeyEventArgs e)
+        private async void Form1_KeyDown(object sender, System.Windows.Forms.KeyEventArgs e)
         {
             if (e.KeyCode == Keys.Escape)
             {
@@ -222,6 +222,14 @@ namespace NPC_File_Browser
                 PathsClicked.Clear();
                 ButtonStar.IconFont = FontAwesome.Sharp.IconFont.Regular;
                 DisableUI();
+            }
+
+            if (e.KeyCode == Keys.Enter && PathTextbox.TextBoxText != CurrentPath)
+            {
+                if (Directory.Exists(PathTextbox.TextBoxText))
+                {
+                    await LoadItemsAsync(PathTextbox.TextBoxText);
+                }
             }
         }
 
@@ -468,6 +476,11 @@ namespace NPC_File_Browser
             _loadCancellationTokenSource?.Cancel();
             _loadCancellationTokenSource?.Dispose();
             base.OnFormClosed(e);
+        }
+
+        private async void PathTextbox_KeyDown(object sender, KeyEventArgs e)
+        {
+
         }
     }
 }
