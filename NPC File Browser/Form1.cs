@@ -25,7 +25,7 @@ namespace NPC_File_Browser
         static extern int DwmSetWindowAttribute(IntPtr hwnd, DwmWindowAttribute attr, ref int attrValue, int attrSize);
 
         List<string> PathsClicked = new List<string>();
-        string CurrentPath;
+        string CurrentPath = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile) + @"\Downloads";
         string LastPathClicked;
         string PinnedFilePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "NPC_File_Browser", "pinned_folders.txt");
 
@@ -51,7 +51,6 @@ namespace NPC_File_Browser
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            CurrentPath = @"C:\Users\test\Downloads\Test";
             LoadItems(CurrentPath);
             PathTextbox.TextBoxText = CurrentPath;
             LoadSidebar();
@@ -121,11 +120,15 @@ namespace NPC_File_Browser
 
         private void ButtonReturn_Click(object sender, EventArgs e)
         {
-            try
+            if (Directory.Exists(Directory.GetParent(CurrentPath).FullName))
             {
                 LoadItems(Directory.GetParent(CurrentPath).FullName);
             }
-            catch { }
+
+            else
+            {
+                System.Media.SystemSounds.Beep.Play();
+            }
         }
 
         private void Form1_KeyDown(object sender, System.Windows.Forms.KeyEventArgs e)
