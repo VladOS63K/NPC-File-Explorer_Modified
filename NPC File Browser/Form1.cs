@@ -6,6 +6,7 @@ using System.Runtime.InteropServices;
 using System;
 using System.Collections.Specialized;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace NPC_File_Browser
 {
@@ -60,6 +61,7 @@ namespace NPC_File_Browser
         private void LoadItems(string directory)
         {
             CurrentPath = directory;
+            PathTextbox.TextBoxText = CurrentPath;
             ContentPanel.Controls.Clear();
 
             string[] folders = Directory.GetDirectories(directory);
@@ -68,7 +70,7 @@ namespace NPC_File_Browser
             foreach (var folder in folders)
             {
                 DirectoryInfo info = new DirectoryInfo(folder);
-                AddItem(false, info.Name.ToString(), "size here", "Folder", info.FullName);
+                AddItem(false, info.Name.ToString(), Helper.Helper.ConvertedSize(Helper.Helper.GetFolderSize(info)).ToString(), "Folder", info.FullName);
             }
 
             foreach (var file in files)
@@ -238,7 +240,7 @@ namespace NPC_File_Browser
 
         private void ButtonCut_Click(object sender, EventArgs e)
         {
-            //Nah I aint doing this
+            //Nah I aint doing this rn. I tried.
         }
 
         private void EnableUI()

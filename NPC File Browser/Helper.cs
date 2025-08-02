@@ -41,5 +41,20 @@ namespace NPC_File_Browser.Helper
                 CopyDirectory(subDir, destSubDir);
             }
         }
+
+        //Random yt tutorial: www.youtube.com/watch?v=hTv4LyLM_Qs
+        public static long GetFolderSize(DirectoryInfo info)
+        {
+            try
+            {
+                var size = info.EnumerateFiles().Sum(file => file.Length);
+                size += info.EnumerateDirectories().Sum(dir => GetFolderSize(dir));
+                return size;
+            }
+            catch {}
+
+
+            return 0;
+        }
     }
 }
