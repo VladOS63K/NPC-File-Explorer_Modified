@@ -31,7 +31,7 @@
             this.panel1 = new System.Windows.Forms.Panel();
             this.SidebarPanel = new System.Windows.Forms.FlowLayoutPanel();
             this.panel2 = new System.Windows.Forms.Panel();
-            this.PathTextbox = new ModernUI.Controls.ModernTextBox();
+            this.PathTextbox = new NPC_File_Browser.Controls.ModernTextBox();
             this.panel3 = new System.Windows.Forms.Panel();
             this.panel7 = new System.Windows.Forms.Panel();
             this.panel8 = new System.Windows.Forms.Panel();
@@ -443,7 +443,7 @@
         private FontAwesome.Sharp.IconPictureBox iconPictureBox1;
         private FontAwesome.Sharp.IconPictureBox ButtonRefresh;
         private System.Windows.Forms.FlowLayoutPanel SidebarPanel;
-        private ModernUI.Controls.ModernTextBox PathTextbox;
+        private NPC_File_Browser.Controls.ModernTextBox PathTextbox;
     }
 }
 
