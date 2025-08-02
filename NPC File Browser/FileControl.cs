@@ -14,15 +14,12 @@ namespace NPC_File_Browser
     {
         public event EventHandler<string> FileClicked;
         public event EventHandler<string> FileDoubleClicked;
-
         public string FolderPath { get; set; }
-
         public bool IsSelected { get; private set; } = false;
 
         public FileControl(bool isFile, string fileName, string fileSize, string fileExtension)
         {
             InitializeComponent();
-
             if (isFile)
                 Icon.IconChar = FontAwesome.Sharp.IconChar.File;
             else
@@ -31,8 +28,19 @@ namespace NPC_File_Browser
             FileNameLabel.Text = fileName;
             FileExtensionLabel.Text = fileExtension;
             FileSizeLabel.Text = fileSize;
-
             this.Click += FileControl_Click;
+        }
+
+        // Add this method to update the size dynamically
+        public void UpdateSize(string newSize)
+        {
+            if (InvokeRequired)
+            {
+                Invoke(new Action<string>(UpdateSize), newSize);
+                return;
+            }
+
+            FileSizeLabel.Text = newSize;
         }
 
         private void FileControl_Click(object sender, EventArgs e)

@@ -1,14 +1,141 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.Collections.Concurrent;
 using System.IO;
-using System.Linq;
-using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
+using System.Linq;
 
 namespace NPC_File_Browser.Helper
 {
-    public class Helper
+    public static class Helper
     {
+        private static readonly ConcurrentDictionary<string, (long size, DateTime lastModified)> _sizeCache
+            = new ConcurrentDictionary<string, (long, DateTime)>();
+
+        private static readonly TimeSpan CacheExpiry = TimeSpan.FromMinutes(5);
+
+        public static async Task<long> GetFolderSizeAsync(DirectoryInfo info, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            try
+            {
+                string path = info.FullName;
+                DateTime lastWrite = info.LastWriteTime;
+
+                if (_sizeCache.TryGetValue(path, out var cached))
+                {
+                    if (DateTime.Now - cached.lastModified < CacheExpiry &&
+                        Math.Abs((lastWrite - cached.lastModified).TotalSeconds) < 1)
+                    {
+                        return cached.size;
+                    }
+                }
+
+                long size = await Task.Run(() =>
+                {
+                    return CalculateFolderSizeRecursive(info, cancellationToken);
+                }, cancellationToken);
+
+                _sizeCache.AddOrUpdate(path, (size, lastWrite), (key, oldValue) => (size, lastWrite));
+
+                return size;
+            }
+
+            catch (OperationCanceledException)
+            {
+                throw;
+            }
+
+            catch (UnauthorizedAccessException)
+            {
+                return 0;
+            }
+
+            catch (DirectoryNotFoundException)
+            {
+                return 0;
+            }
+
+            catch
+            {
+                return 0;
+            }
+        }
+
+        private static long CalculateFolderSizeRecursive(DirectoryInfo directory, CancellationToken cancellationToken)
+        {
+            long totalSize = 0;
+
+            try
+            {
+                foreach (var file in directory.EnumerateFiles())
+                {
+                    cancellationToken.ThrowIfCancellationRequested();
+                    try
+                    {
+                        totalSize += file.Length;
+                    }
+                    catch (UnauthorizedAccessException)
+                    {
+                        continue;
+                    }
+                    catch (IOException)
+                    {
+                        continue;
+                    }
+                }
+
+                foreach (var subDir in directory.EnumerateDirectories())
+                {
+                    cancellationToken.ThrowIfCancellationRequested();
+                    try
+                    {
+                        totalSize += CalculateFolderSizeRecursive(subDir, cancellationToken);
+                    }
+
+                    catch (UnauthorizedAccessException)
+                    {
+                        continue;
+                    }
+
+                    catch (DirectoryNotFoundException)
+                    {
+                        continue;
+                    }
+                }
+            }
+
+            catch (UnauthorizedAccessException)
+            {
+                return 0;
+            }
+
+            catch (DirectoryNotFoundException)
+            {
+                return 0;
+            }
+
+            return totalSize;
+        }
+
+        public static long GetFolderSize(DirectoryInfo info)
+        {
+            try
+            {
+                var size = info.EnumerateFiles().Sum(file => file.Length);
+                size += info.EnumerateDirectories().Sum(dir => GetFolderSize(dir));
+                return size;
+            }
+            catch
+            {
+                return 0;
+            }
+        }
+
+        public static void ClearSizeCache()
+        {
+            _sizeCache.Clear();
+        }
+
         public static string ConvertedSize(double bytes)
         {
             string[] sizes = { "B", "KB", "MB", "GB", "TB" };
@@ -40,21 +167,6 @@ namespace NPC_File_Browser.Helper
                 string destSubDir = Path.Combine(destDir, Path.GetFileName(subDir));
                 CopyDirectory(subDir, destSubDir);
             }
-        }
-
-        //Random yt tutorial: www.youtube.com/watch?v=hTv4LyLM_Qs
-        public static long GetFolderSize(DirectoryInfo info)
-        {
-            try
-            {
-                var size = info.EnumerateFiles().Sum(file => file.Length);
-                size += info.EnumerateDirectories().Sum(dir => GetFolderSize(dir));
-                return size;
-            }
-            catch {}
-
-
-            return 0;
         }
     }
 }

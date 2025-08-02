@@ -7,6 +7,7 @@ using System;
 using System.Collections.Specialized;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Threading;
 
 namespace NPC_File_Browser
 {
@@ -29,12 +30,15 @@ namespace NPC_File_Browser
         string LastPathClicked;
         string PinnedFilePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "NPC_File_Browser", "pinned_folders.txt");
 
+        private CancellationTokenSource _loadCancellationTokenSource;
+        private readonly Dictionary<string, FileControl> _fileControls = new Dictionary<string, FileControl>();
+
         public Form1()
         {
             InitializeComponent();
         }
 
-        private void EnableControlDarkMode(Control control) //Code from stack overflow
+        private void EnableControlDarkMode(Control control)
         {
             int trueValue = 1;
             SetWindowTheme(control.Handle, "DarkMode_Explorer", null);
@@ -49,48 +53,121 @@ namespace NPC_File_Browser
             EnableControlDarkMode(ContentPanel);
         }
 
-        private void Form1_Load(object sender, EventArgs e)
+        private async void Form1_Load(object sender, EventArgs e)
         {
-            LoadItems(CurrentPath);
+            await LoadItemsAsync(CurrentPath);
             PathTextbox.TextBoxText = CurrentPath;
             LoadSidebar();
             EnableControlDarkMode(ContentPanel);
         }
 
-        private void LoadItems(string directory)
+        private async Task LoadItemsAsync(string directory)
         {
+            _loadCancellationTokenSource?.Cancel();
+            _loadCancellationTokenSource = new CancellationTokenSource();
+            var cancellationToken = _loadCancellationTokenSource.Token;
+
             CurrentPath = directory;
             PathTextbox.TextBoxText = CurrentPath;
             ContentPanel.Controls.Clear();
+            _fileControls.Clear();
 
-            string[] folders = Directory.GetDirectories(directory);
-            string[] files = Directory.GetFiles(directory);
-
-            foreach (var folder in folders)
+            try
             {
-                DirectoryInfo info = new DirectoryInfo(folder);
-                AddItem(false, info.Name.ToString(), Helper.Helper.ConvertedSize(Helper.Helper.GetFolderSize(info)).ToString(), "Folder", info.FullName);
+                string[] folders = Directory.GetDirectories(directory);
+                string[] files = Directory.GetFiles(directory);
+
+                foreach (var file in files)
+                {
+                    if (cancellationToken.IsCancellationRequested) return;
+
+                    FileInfo info = new FileInfo(file);
+                    string extension = info.Extension;
+                    if (!string.IsNullOrEmpty(extension) && extension.Length > 1)
+                    {
+                        extension = extension.Substring(1).ToUpper() + " File";
+                    }
+                    else
+                    {
+                        extension = "File";
+                    }
+
+                    AddItem(true, info.Name, Helper.Helper.ConvertedSize(Convert.ToDouble(info.Length)),
+                           extension, info.FullName);
+                }
+
+                foreach (var folder in folders)
+                {
+                    if (cancellationToken.IsCancellationRequested) return;
+
+                    DirectoryInfo info = new DirectoryInfo(folder);
+                    var fileControl = AddItem(false, info.Name, "Calculating...", "Folder", info.FullName);
+
+                    Task.Run(async () => await CalculateFolderSizeAsync(info, fileControl, cancellationToken));
+                }
             }
-
-            foreach (var file in files)
+            catch (UnauthorizedAccessException)
             {
-                FileInfo info = new FileInfo(file);
-                AddItem(true, info.Name.ToString(), Helper.Helper.ConvertedSize(Convert.ToDouble(info.Length.ToString())), info.Extension.ToString().Remove(0, 1).ToUpper() + " File", info.FullName);
+                MessageBox.Show("Access denied to this directory.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+            catch (DirectoryNotFoundException)
+            {
+                MessageBox.Show("Directory not found.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error loading directory: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
-        private void AddItem(bool isFile, string fileName, string fileSize, string fileExtension, string fullPath)
+        private async Task CalculateFolderSizeAsync(DirectoryInfo info, FileControl fileControl, CancellationToken cancellationToken)
+        {
+            try
+            {
+                long size = await Helper.Helper.GetFolderSizeAsync(info, cancellationToken);
+
+                if (!cancellationToken.IsCancellationRequested && !fileControl.IsDisposed)
+                {
+                    if (InvokeRequired)
+                    {
+                        Invoke(new Action(() => fileControl.UpdateSize(Helper.Helper.ConvertedSize(size))));
+                    }
+                    else
+                    {
+                        fileControl.UpdateSize(Helper.Helper.ConvertedSize(size));
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                if (!cancellationToken.IsCancellationRequested && !fileControl.IsDisposed)
+                {
+                    if (InvokeRequired)
+                    {
+                        Invoke(new Action(() => fileControl.UpdateSize("Unknown")));
+                    }
+                    else
+                    {
+                        fileControl.UpdateSize("Unknown");
+                    }
+                }
+            }
+        }
+
+        private FileControl AddItem(bool isFile, string fileName, string fileSize, string fileExtension, string fullPath)
         {
             FileControl FC = new FileControl(isFile, fileName, fileSize, fileExtension);
             FC.FolderPath = fullPath;
             FC.FileClicked += UpdateItems_FileClicked;
             FC.FileDoubleClicked += UpdateItems_FileDoubleClicked;
             ContentPanel.Controls.Add(FC);
+            _fileControls[fullPath] = FC;
+            return FC;
         }
 
         private void UpdateItems_FileClicked(object sender, string directory)
         {
-            if (PathsClicked.Contains(directory) == false) //Fixes adding the same directory twice
+            if (PathsClicked.Contains(directory) == false)
             {
                 PathsClicked.Add(directory);
                 LastPathClicked = directory;
@@ -106,25 +183,23 @@ namespace NPC_File_Browser
             {
                 ButtonStar.IconFont = FontAwesome.Sharp.IconFont.Solid;
             }
-
             else
             {
                 ButtonStar.IconFont = FontAwesome.Sharp.IconFont.Regular;
             }
         }
 
-        private void UpdateItems_FileDoubleClicked(object sender, string directory)
+        private async void UpdateItems_FileDoubleClicked(object sender, string directory)
         {
-            LoadItems(directory);
+            await LoadItemsAsync(directory);
         }
 
-        private void ButtonReturn_Click(object sender, EventArgs e)
+        private async void ButtonReturn_Click(object sender, EventArgs e)
         {
-            if (Directory.Exists(Directory.GetParent(CurrentPath).FullName))
+            if (CurrentPath.Length > 3)
             {
-                LoadItems(Directory.GetParent(CurrentPath).FullName);
+                await LoadItemsAsync(Directory.GetParent(CurrentPath).FullName);
             }
-
             else
             {
                 System.Media.SystemSounds.Beep.Play();
@@ -180,13 +255,11 @@ namespace NPC_File_Browser
                         {
                             File.Copy(path, Path.Combine(directory, Path.GetFileName(path)), overwrite: true);
                         }
-
                         else if (Directory.Exists(path))
                         {
                             Helper.Helper.CopyDirectory(path, Path.Combine(directory, Path.GetFileName(path)));
                         }
                     }
-
                     catch (Exception ex)
                     {
                         MessageBox.Show("Error pasting: " + ex.Message);
@@ -203,7 +276,6 @@ namespace NPC_File_Browser
                 {
                     File.Delete(directory);
                 }
-
                 else if (Directory.Exists(directory))
                 {
                     Directory.Delete(directory, true);
@@ -216,7 +288,7 @@ namespace NPC_File_Browser
             CopyDirectories(PathsClicked);
         }
 
-        private void ButtonPaste_Click(object sender, EventArgs e)
+        private async void ButtonPaste_Click(object sender, EventArgs e)
         {
             PasteDirectories(CurrentPath);
 
@@ -230,15 +302,15 @@ namespace NPC_File_Browser
 
             PathsClicked.Clear();
             DisableUI();
-            LoadItems(CurrentPath);
+            await LoadItemsAsync(CurrentPath);
         }
 
-        private void ButtonDelete_Click(object sender, EventArgs e)
+        private async void ButtonDelete_Click(object sender, EventArgs e)
         {
             DeleteDirectories(PathsClicked);
             PathsClicked.Clear();
             DisableUI();
-            LoadItems(CurrentPath);
+            await LoadItemsAsync(CurrentPath);
         }
 
         private void ButtonCut_Click(object sender, EventArgs e)
@@ -262,11 +334,12 @@ namespace NPC_File_Browser
             ButtonDelete.IconColor = Color.Gray;
         }
 
-        private void ButtonRefresh_Click(object sender, EventArgs e)
+        private async void ButtonRefresh_Click(object sender, EventArgs e)
         {
             PathsClicked.Clear();
             DisableUI();
-            LoadItems(CurrentPath);
+            Helper.Helper.ClearSizeCache();
+            await LoadItemsAsync(CurrentPath);
             PathTextbox.TextBoxText = CurrentPath;
         }
 
@@ -284,7 +357,7 @@ namespace NPC_File_Browser
 
             //Add drives
             try
-            { 
+            {
                 foreach (DriveInfo drive in DriveInfo.GetDrives())
                 {
                     AddSidebarDrive(drive.Name.ToString().Remove(2, 1));
@@ -295,17 +368,20 @@ namespace NPC_File_Browser
             AddSideBarSeperator();
 
             //Add pinned folders
-            foreach (string path in File.ReadAllLines(PinnedFilePath))
+            if (File.Exists(PinnedFilePath))
             {
-                if (!string.IsNullOrWhiteSpace(path) && Directory.Exists(path))
+                foreach (string path in File.ReadAllLines(PinnedFilePath))
                 {
-                    string folderName = Path.GetFileName(path);
-                    if (string.IsNullOrEmpty(folderName))
+                    if (!string.IsNullOrWhiteSpace(path) && Directory.Exists(path))
                     {
-                        folderName = path;
-                    }
+                        string folderName = Path.GetFileName(path);
+                        if (string.IsNullOrEmpty(folderName))
+                        {
+                            folderName = path;
+                        }
 
-                    AddSidebarFile(folderName, path);
+                        AddSidebarFile(folderName, path);
+                    }
                 }
             }
         }
@@ -314,7 +390,7 @@ namespace NPC_File_Browser
         {
             SidebarFileControl SFC = new SidebarFileControl(folderName);
             SFC.FolderPath = folderPath;
-            SFC.FileDoubleClicked += (sender, path) => { LoadItems(folderPath); };
+            SFC.FileDoubleClicked += async (sender, path) => { await LoadItemsAsync(folderPath); };
             SidebarPanel.Controls.Add(SFC);
         }
 
@@ -347,7 +423,7 @@ namespace NPC_File_Browser
 
             if (File.Exists(PinnedFilePath))
             {
-                if (File.ReadAllLines(PinnedFilePath).Any(path => path.Equals(folderPath, StringComparison.OrdinalIgnoreCase))) { return; } 
+                if (File.ReadAllLines(PinnedFilePath).Any(path => path.Equals(folderPath, StringComparison.OrdinalIgnoreCase))) { return; }
             }
 
             File.AppendAllText(PinnedFilePath, folderPath + Environment.NewLine);
@@ -377,7 +453,6 @@ namespace NPC_File_Browser
             {
                 RemovePinnedFolder(LastPathClicked);
             }
-
             else
             {
                 AddPinnedFolder(LastPathClicked);
@@ -385,6 +460,13 @@ namespace NPC_File_Browser
 
             UpdateStarButton();
             LoadSidebar();
+        }
+
+        protected override void OnFormClosed(FormClosedEventArgs e)
+        {
+            _loadCancellationTokenSource?.Cancel();
+            _loadCancellationTokenSource?.Dispose();
+            base.OnFormClosed(e);
         }
     }
 }
