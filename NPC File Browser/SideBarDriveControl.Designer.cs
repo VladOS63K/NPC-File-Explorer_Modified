@@ -30,9 +30,10 @@
         {
             this.FileNameLabel = new System.Windows.Forms.Label();
             this.Icon = new FontAwesome.Sharp.IconPictureBox();
-            this.SizeBar = new System.Windows.Forms.ProgressBar();
             this.LabelSize = new System.Windows.Forms.Label();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
             ((System.ComponentModel.ISupportInitialize)(this.Icon)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
             // FileNameLabel
@@ -61,16 +62,6 @@
             this.Icon.TabIndex = 4;
             this.Icon.TabStop = false;
             // 
-            // SizeBar
-            // 
-            this.SizeBar.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(70)))), ((int)(((byte)(70)))), ((int)(((byte)(70)))));
-            this.SizeBar.Location = new System.Drawing.Point(6, 28);
-            this.SizeBar.Name = "SizeBar";
-            this.SizeBar.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.SizeBar.Size = new System.Drawing.Size(224, 16);
-            this.SizeBar.TabIndex = 6;
-            this.SizeBar.Value = 10;
-            // 
             // LabelSize
             // 
             this.LabelSize.AutoSize = true;
@@ -84,18 +75,27 @@
             this.LabelSize.TabIndex = 7;
             this.LabelSize.Text = "Drive C:";
             // 
+            // pictureBox1
+            // 
+            this.pictureBox1.Location = new System.Drawing.Point(3, 30);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(230, 17);
+            this.pictureBox1.TabIndex = 8;
+            this.pictureBox1.TabStop = false;
+            // 
             // SideBarDriveControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.Transparent;
+            this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.LabelSize);
-            this.Controls.Add(this.SizeBar);
             this.Controls.Add(this.FileNameLabel);
             this.Controls.Add(this.Icon);
             this.Name = "SideBarDriveControl";
             this.Size = new System.Drawing.Size(236, 50);
             ((System.ComponentModel.ISupportInitialize)(this.Icon)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -105,7 +105,7 @@
 
         private System.Windows.Forms.Label FileNameLabel;
         private FontAwesome.Sharp.IconPictureBox Icon;
-        private System.Windows.Forms.ProgressBar SizeBar;
         private System.Windows.Forms.Label LabelSize;
+        private System.Windows.Forms.PictureBox pictureBox1;
     }
 }
