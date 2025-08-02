@@ -20,7 +20,7 @@ namespace NPC_File_Browser.Controls
         public string PlaceholderText { get; set; } = "Enter text...";
         public Color BorderColor { get; set; } = Color.Gray;
         public int BorderRadius { get; set; } = 10;
-        public Color BackgroundColor { get; set; } = Color.FromArgb(45, 45, 48);
+        public Color BackgroundColor { get; set; } = Color.FromArgb(35, 35, 35);
         public Color TextColor { get; set; } = Color.White;
         public Color PlaceholderColor { get; set; } = Color.DimGray;
 
@@ -102,8 +102,8 @@ namespace NPC_File_Browser.Controls
             g.SmoothingMode = SmoothingMode.AntiAlias;
 
             Rectangle rect = new Rectangle(0, 0, Width - 1, Height - 1);
-            var pen = new Pen(BorderColor);
-            var brush = new SolidBrush(BackgroundColor);
+            var pen = new Pen(Color.DarkGray);
+            var brush = new SolidBrush(Color.FromArgb(35, 35, 35));
             var bgPath = GetRoundedRect(rect, BorderRadius);
 
             g.FillPath(brush, bgPath);
