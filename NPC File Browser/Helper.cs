@@ -113,6 +113,10 @@ namespace NPC_File_Browser.Helper
             {
                 return 0;
             }
+            catch (OperationCanceledException)
+            {
+                return 0;
+            }
 
             return totalSize;
         }

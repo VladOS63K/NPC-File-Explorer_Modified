@@ -16,6 +16,7 @@ namespace NPC_File_Browser
         public event EventHandler<string> FileDoubleClicked;
         public string FolderPath { get; set; }
         public bool IsSelected { get; private set; } = false;
+        public bool IsFile { get; private set; }
 
         public FileControl(bool isFile, string fileName, string fileSize, string fileExtension)
         {
@@ -24,8 +25,10 @@ namespace NPC_File_Browser
                 Icon.IconChar = FontAwesome.Sharp.IconChar.File;
             else
                 Icon.IconChar = FontAwesome.Sharp.IconChar.Folder;
+            this.IsFile = isFile;
+            bool isFileNameLong = !(fileName.Length <= 25);
 
-            FileNameLabel.Text = fileName;
+            FileNameLabel.Text = fileName.Substring(0,(isFileNameLong?25:fileName.Length))+(isFileNameLong?"...":"");
             FileExtensionLabel.Text = fileExtension;
             FileSizeLabel.Text = fileSize;
             this.Click += FileControl_Click;
@@ -63,10 +66,7 @@ namespace NPC_File_Browser
 
         private void FileControl_DoubleClick(object sender, EventArgs e)
         {
-            if (Icon.IconChar == FontAwesome.Sharp.IconChar.Folder)
-            {
-                FileDoubleClicked?.Invoke(this, FolderPath);
-            }
+            FileDoubleClicked?.Invoke(this, FolderPath);
         }
     }
 }

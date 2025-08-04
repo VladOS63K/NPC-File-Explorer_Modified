@@ -9,10 +9,12 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Threading;
 using NPC_File_Browser;
+using RegistryFileTypeReader;
+using System.Diagnostics;
 
 namespace NPC_File_Browser
 {
-    public partial class Form1 : Form
+    public partial class Main : Form
     {
         enum DwmWindowAttribute : uint
         {
@@ -33,8 +35,9 @@ namespace NPC_File_Browser
 
         private CancellationTokenSource _loadCancellationTokenSource;
         private readonly Dictionary<string, FileControl> _fileControls = new Dictionary<string, FileControl>();
+        private bool isCtrlHold = false;
 
-        public Form1()
+        public Main()
         {
             InitializeComponent();
         }
@@ -78,25 +81,6 @@ namespace NPC_File_Browser
                 string[] folders = Directory.GetDirectories(directory);
                 string[] files = Directory.GetFiles(directory);
 
-                foreach (var file in files)
-                {
-                    if (cancellationToken.IsCancellationRequested) return;
-
-                    FileInfo info = new FileInfo(file);
-                    string extension = info.Extension;
-                    if (!string.IsNullOrEmpty(extension) && extension.Length > 1)
-                    {
-                        extension = extension.Substring(1).ToUpper() + " File";
-                    }
-                    else
-                    {
-                        extension = "File";
-                    }
-
-                    AddItem(true, info.Name, Helper.Helper.ConvertedSize(Convert.ToDouble(info.Length)),
-                           extension, info.FullName);
-                }
-
                 foreach (var folder in folders)
                 {
                     if (cancellationToken.IsCancellationRequested) return;
@@ -105,6 +89,42 @@ namespace NPC_File_Browser
                     var fileControl = AddItem(false, info.Name, "Calculating...", "Folder", info.FullName);
 
                     Task.Run(async () => await CalculateFolderSizeAsync(info, fileControl, cancellationToken));
+                }
+
+                foreach (var file in files)
+                {
+                    if (cancellationToken.IsCancellationRequested) return;
+
+                    FileInfo info = new FileInfo(file);
+                    string extension = info.Extension;
+                    
+                    if (!string.IsNullOrEmpty(extension) && extension.Length > 1)
+                    {
+                        try
+                        {
+                            RegistryFileTypeKey key = new RegistryFileTypeKey(extension);
+                            if (key.ExtensionType != "")
+                            {
+                                extension = key.FriendlyTypeName;
+                            }
+                            else
+                            {
+                                extension = extension.Substring(1).ToUpper() + " File";
+                            }
+                        }
+                        catch(Exception ex)
+                        {
+                            Console.WriteLine(ex.Message);
+                            extension = extension.Substring(1).ToUpper() + " File";
+                        }
+                    }
+                    else
+                    {
+                        extension = "File";
+                    }
+
+                    AddItem(true, info.Name, Helper.Helper.ConvertedSize(Convert.ToDouble(info.Length)),
+                           extension, info.FullName);
                 }
             }
             catch (UnauthorizedAccessException)
@@ -117,7 +137,7 @@ namespace NPC_File_Browser
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Error loading directory: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Error loading directory: \n\n" + ex.ToString(), "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -168,13 +188,25 @@ namespace NPC_File_Browser
 
         private void UpdateItems_FileClicked(object sender, string directory)
         {
-            if (PathsClicked.Contains(directory) == false)
+            FileControl ctrl = sender as FileControl;
+            Console.WriteLine("Click");
+            if (!PathsClicked.Contains(directory))
             {
+                if (!isCtrlHold) PathsClicked.Clear();
+                foreach (FileControl c in _fileControls.Values)
+                {
+                    c.BackColor = Color.Transparent;
+                }
                 PathsClicked.Add(directory);
+                ctrl.Select();
                 LastPathClicked = directory;
 
                 UpdateStarButton();
                 EnableUI();
+            }
+            else
+            {
+                PathsClicked.Remove(directory);
             }
         }
 
@@ -192,7 +224,25 @@ namespace NPC_File_Browser
 
         private async void UpdateItems_FileDoubleClicked(object sender, string directory)
         {
-            await LoadItemsAsync(directory);
+            Console.WriteLine("Dabl Click");
+            FileControl ctrl = sender as FileControl;
+            if (ctrl.IsFile)
+            {
+                try
+                {
+                    Console.WriteLine("Starting file");
+                    Process.Start(ctrl.FolderPath);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+            else
+            {
+                Console.WriteLine("Open folder");
+                await LoadItemsAsync(directory);
+            }
         }
 
         private async void ButtonReturn_Click(object sender, EventArgs e)
@@ -231,6 +281,8 @@ namespace NPC_File_Browser
                     await LoadItemsAsync(PathTextbox.TextBoxText);
                 }
             }
+
+            if (e.KeyCode == Keys.ControlKey) isCtrlHold = true;
         }
 
         private void CopyDirectories(List<string> directories)
@@ -481,6 +533,12 @@ namespace NPC_File_Browser
         private async void PathTextbox_KeyDown(object sender, KeyEventArgs e)
         {
 
+        }
+
+        private void Form1_KeyUp(object sender, KeyEventArgs e)
+        {
+            
+            if (e.KeyCode == Keys.ControlKey) isCtrlHold = false;
         }
     }
 }
