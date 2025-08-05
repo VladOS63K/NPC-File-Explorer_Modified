@@ -60,6 +60,7 @@ namespace NPC_File_Browser
             PathTextbox.TextBoxText = CurrentPath;
             LoadSidebar();
             EnableControlDarkMode(ContentPanel);
+            EnableControlDarkMode(this);
         }
 
         private async Task LoadItemsAsync(string directory)
