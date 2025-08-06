@@ -29,7 +29,7 @@ namespace NPC_File_Browser
         static extern int DwmSetWindowAttribute(IntPtr hwnd, DwmWindowAttribute attr, ref int attrValue, int attrSize);
 
         List<string> PathsClicked = new List<string>();
-        string CurrentPath = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile) + @"\Downloads";
+        string CurrentPath = Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory);
         string LastPathClicked;
         string PinnedFilePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "NPC_File_Browser", "pinned_folders.txt");
 
@@ -528,6 +528,11 @@ namespace NPC_File_Browser
         private async void PathTextbox_KeyDown(object sender, KeyEventArgs e)
         {
 
+        }
+
+        private void ButtonAbout_Click(object sender, EventArgs e)
+        {
+            new About().ShowDialog();
         }
     }
 }
