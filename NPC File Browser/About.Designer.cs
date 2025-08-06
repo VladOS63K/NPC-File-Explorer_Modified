@@ -116,6 +116,7 @@
             this.YoutubeCSharpbtn.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.YoutubeCSharpbtn.BackColor = System.Drawing.Color.Transparent;
+            this.YoutubeCSharpbtn.Cursor = System.Windows.Forms.Cursors.Hand;
             this.YoutubeCSharpbtn.FlatAppearance.BorderSize = 0;
             this.YoutubeCSharpbtn.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
             this.YoutubeCSharpbtn.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
@@ -187,6 +188,7 @@
             this.YoutubeVladOS63Kbtn.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.YoutubeVladOS63Kbtn.BackColor = System.Drawing.Color.Transparent;
+            this.YoutubeVladOS63Kbtn.Cursor = System.Windows.Forms.Cursors.Hand;
             this.YoutubeVladOS63Kbtn.FlatAppearance.BorderSize = 0;
             this.YoutubeVladOS63Kbtn.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
             this.YoutubeVladOS63Kbtn.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
@@ -233,6 +235,7 @@
             this.GithubCSharpbtn.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.GithubCSharpbtn.BackColor = System.Drawing.Color.Transparent;
+            this.GithubCSharpbtn.Cursor = System.Windows.Forms.Cursors.Hand;
             this.GithubCSharpbtn.FlatAppearance.BorderSize = 0;
             this.GithubCSharpbtn.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
             this.GithubCSharpbtn.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
@@ -279,6 +282,7 @@
             this.GithubVladOS63Kbtn.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.GithubVladOS63Kbtn.BackColor = System.Drawing.Color.Transparent;
+            this.GithubVladOS63Kbtn.Cursor = System.Windows.Forms.Cursors.Hand;
             this.GithubVladOS63Kbtn.FlatAppearance.BorderSize = 0;
             this.GithubVladOS63Kbtn.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
             this.GithubVladOS63Kbtn.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
@@ -401,6 +405,7 @@
             this.Name = "About";
             this.ShowIcon = false;
             this.ShowInTaskbar = false;
+            this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "About";
             ((System.ComponentModel.ISupportInitialize)(this.Logo)).EndInit();
