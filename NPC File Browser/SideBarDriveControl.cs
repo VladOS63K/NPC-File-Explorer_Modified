@@ -39,13 +39,32 @@ namespace NPC_File_Browser
                 pbComplete = 0;
 
                 DriveInfo cDrive = new DriveInfo(drive);
-                FileNameLabel.Text = $"{(String.IsNullOrEmpty(cDrive.VolumeLabel)?"Drive":cDrive.VolumeLabel)} (" + drive + ")";
+
+                switch(cDrive.DriveType)
+                {
+                    case DriveType.Fixed:
+                        Icon.IconChar = FontAwesome.Sharp.IconChar.Hdd; break;
+                    case DriveType.Removable:
+                        Icon.IconChar = FontAwesome.Sharp.IconChar.Usb; break;
+                    case DriveType.CDRom:
+                        Icon.IconChar = FontAwesome.Sharp.IconChar.CompactDisc; break;
+                    case DriveType.Network:
+                        Icon.IconChar = FontAwesome.Sharp.IconChar.NetworkWired; break;
+                    case DriveType.Unknown:
+                        Icon.IconChar = FontAwesome.Sharp.IconChar.Question; break;
+                }
+                
                 if (cDrive.IsReady)
                 {
+                    FileNameLabel.Text = $"{(String.IsNullOrEmpty(cDrive.VolumeLabel) ? "Drive" : cDrive.VolumeLabel)} (" + drive + ")";
                     long totalSize = cDrive.TotalSize;
                     long usedSpace = totalSize - cDrive.TotalFreeSpace;
                     string text = $"{Helper.Helper.ConvertedSize(usedSpace)} / {Helper.Helper.ConvertedSize(totalSize)}";
                     UpdateProgressBar((int)Math.Round((double)usedSpace / totalSize * 100),text);
+                }
+                else
+                {
+                    FileNameLabel.Text = $"Drive (" + drive + " not ready)";
                 }
             }
             catch { }

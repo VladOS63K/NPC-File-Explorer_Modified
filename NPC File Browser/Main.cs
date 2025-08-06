@@ -54,7 +54,7 @@ namespace NPC_File_Browser
         {
             ContentPanel.Size = new Size(this.Size.Width - 267, this.Size.Height - 135);
             ContentPanel.Location = new Point(250, 100);
-            EnableControlDarkMode(ContentPanel);
+            PathTextbox.Refresh();
         }
 
         private async void Form1_Load(object sender, EventArgs e)
@@ -100,7 +100,7 @@ namespace NPC_File_Browser
 
                     FileInfo info = new FileInfo(file);
                     string extension = info.Extension;
-                    
+
                     if (!string.IsNullOrEmpty(extension) && extension.Length > 1)
                     {
                         try
@@ -115,7 +115,7 @@ namespace NPC_File_Browser
                                 extension = extension.Substring(1).ToUpper() + " File";
                             }
                         }
-                        catch(Exception ex)
+                        catch (Exception ex)
                         {
                             Console.WriteLine(ex.Message);
                             extension = extension.Substring(1).ToUpper() + " File";
@@ -213,6 +213,8 @@ namespace NPC_File_Browser
             {
                 PathsClicked.Remove(directory);
                 ctrl.Deselect();
+                ButtonStar.IconFont = FontAwesome.Sharp.IconFont.Regular;
+                DisableUI();
             }
         }
 
@@ -285,7 +287,7 @@ namespace NPC_File_Browser
                 }
             }
 
-            if (e.KeyCode == Keys.ControlKey) isCtrlHold = true;
+            if (e.KeyCode == Keys.Control) isCtrlHold = true;
         }
 
         private void CopyDirectories(List<string> directories)
@@ -527,8 +529,5 @@ namespace NPC_File_Browser
         {
 
         }
-
-        private void Form1_KeyUp(object sender, KeyEventArgs e)
-        {
-            
-            if (e.KeyCode == Keys.ControlKey
+    }
+}

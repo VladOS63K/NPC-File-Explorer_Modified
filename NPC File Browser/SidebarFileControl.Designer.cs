@@ -35,14 +35,14 @@
             // 
             // FileNameLabel
             // 
-            this.FileNameLabel.AutoSize = true;
             this.FileNameLabel.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.FileNameLabel.ForeColor = System.Drawing.Color.White;
             this.FileNameLabel.Location = new System.Drawing.Point(35, 4);
             this.FileNameLabel.Name = "FileNameLabel";
-            this.FileNameLabel.Size = new System.Drawing.Size(45, 17);
+            this.FileNameLabel.Size = new System.Drawing.Size(198, 17);
             this.FileNameLabel.TabIndex = 3;
-            this.FileNameLabel.Text = "label1";
+            this.FileNameLabel.Text = "Folder Name";
+            this.FileNameLabel.Click += new System.EventHandler(this.SidebarFileControl_DoubleClick);
             // 
             // Icon
             // 
@@ -50,14 +50,15 @@
             this.Icon.BackColor = System.Drawing.Color.Transparent;
             this.Icon.IconChar = FontAwesome.Sharp.IconChar.Folder;
             this.Icon.IconColor = System.Drawing.Color.White;
-            this.Icon.IconFont = FontAwesome.Sharp.IconFont.Auto;
-            this.Icon.IconSize = 23;
+            this.Icon.IconFont = FontAwesome.Sharp.IconFont.Solid;
             this.Icon.Location = new System.Drawing.Point(0, 1);
             this.Icon.Name = "Icon";
-            this.Icon.Size = new System.Drawing.Size(30, 23);
+            this.Icon.Size = new System.Drawing.Size(24, 24);
             this.Icon.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.Icon.TabIndex = 2;
             this.Icon.TabStop = false;
+            this.Icon.UseGdi = true;
+            this.Icon.Click += new System.EventHandler(this.SidebarFileControl_DoubleClick);
             // 
             // SidebarFileControl
             // 
@@ -70,7 +71,6 @@
             this.Size = new System.Drawing.Size(236, 25);
             ((System.ComponentModel.ISupportInitialize)(this.Icon)).EndInit();
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 
