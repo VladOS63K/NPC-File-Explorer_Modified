@@ -14,12 +14,12 @@ namespace NPC_File_Browser
     {
         double pbUnit;
         int pbWIDTH, pbHEIGHT, pbComplete;
+        Font lblSizeFont = new Font("Segoe UI", (float)8.25, FontStyle.Regular);
         Bitmap bmp;
         Graphics g;
         public SideBarDriveControl(string drive)
         {
             InitializeComponent();
-            FileNameLabel.Text = "Drive " + drive;
 
             UpdateDiskSpace(drive); //New progress bar adapted from: dyclassroom.com/csharp-project/how-to-create-a-custom-progress-bar-in-csharp-using-visual-studio
         }
@@ -39,27 +39,30 @@ namespace NPC_File_Browser
                 pbComplete = 0;
 
                 DriveInfo cDrive = new DriveInfo(drive);
+                FileNameLabel.Text = $"{(String.IsNullOrEmpty(cDrive.VolumeLabel)?"Drive":cDrive.VolumeLabel)} (" + drive + ")";
                 if (cDrive.IsReady)
                 {
                     long totalSize = cDrive.TotalSize;
                     long usedSpace = totalSize - cDrive.TotalFreeSpace;
-                    UpdateProgressBar((int)Math.Round((double)usedSpace / totalSize * 100));
-                    LabelSize.Text = $"{Helper.Helper.ConvertedSize(usedSpace)} / {Helper.Helper.ConvertedSize(totalSize)}";
+                    string text = $"{Helper.Helper.ConvertedSize(usedSpace)} / {Helper.Helper.ConvertedSize(totalSize)}";
+                    UpdateProgressBar((int)Math.Round((double)usedSpace / totalSize * 100),text);
                 }
             }
             catch { }
         }
-        private void UpdateProgressBar(int percentage)
+        private void UpdateProgressBar(int percentage, string text)
         {
             if (bmp != null)
                 bmp.Dispose();
 
             bmp = new Bitmap(pbWIDTH, pbHEIGHT);
+            Size txtSize = TextRenderer.MeasureText(text, lblSizeFont);
 
             using (Graphics g = Graphics.FromImage(bmp))
             {
                 g.Clear(Color.FromArgb(40, 40, 40));
                 g.FillRectangle(Brushes.DimGray, new Rectangle(0, 0, (int)(percentage * pbUnit), pbHEIGHT));
+                g.DrawString(text, lblSizeFont, Brushes.White, new PointF((pbWIDTH - 5 - txtSize.Width), (pbHEIGHT / 2) - (txtSize.Height / 2)));
             }
 
             pictureBox1.Image = bmp;
