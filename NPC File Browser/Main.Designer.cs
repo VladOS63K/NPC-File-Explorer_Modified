@@ -31,6 +31,8 @@
             this.panel1 = new System.Windows.Forms.Panel();
             this.SidebarPanel = new System.Windows.Forms.FlowLayoutPanel();
             this.panel2 = new System.Windows.Forms.Panel();
+            this.ButtonSearch = new System.Windows.Forms.PictureBox();
+            this.SearchTextbox = new NPC_File_Browser.Controls.ModernTextBox();
             this.PathTextbox = new NPC_File_Browser.Controls.ModernTextBox();
             this.ContentPanel = new System.Windows.Forms.FlowLayoutPanel();
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
@@ -53,6 +55,7 @@
             this.ButtonDelete = new FontAwesome.Sharp.IconPictureBox();
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.ButtonSearch)).BeginInit();
             this.flowLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.ButtonReturn)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.ButtonBack)).BeginInit();
@@ -91,6 +94,8 @@
             // panel2
             // 
             this.panel2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(35)))), ((int)(((byte)(35)))));
+            this.panel2.Controls.Add(this.ButtonSearch);
+            this.panel2.Controls.Add(this.SearchTextbox);
             this.panel2.Controls.Add(this.PathTextbox);
             this.panel2.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel2.Location = new System.Drawing.Point(0, 0);
@@ -98,8 +103,40 @@
             this.panel2.Size = new System.Drawing.Size(1234, 60);
             this.panel2.TabIndex = 1;
             // 
+            // ButtonSearch
+            // 
+            this.ButtonSearch.Anchor = System.Windows.Forms.AnchorStyles.Right;
+            this.ButtonSearch.BackColor = System.Drawing.Color.Transparent;
+            this.ButtonSearch.Image = global::NPC_File_Browser.Properties.Resources.go;
+            this.ButtonSearch.Location = new System.Drawing.Point(1188, 18);
+            this.ButtonSearch.Name = "ButtonSearch";
+            this.ButtonSearch.Size = new System.Drawing.Size(24, 24);
+            this.ButtonSearch.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.ButtonSearch.TabIndex = 2;
+            this.ButtonSearch.TabStop = false;
+            // 
+            // SearchTextbox
+            // 
+            this.SearchTextbox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.SearchTextbox.BackColor = System.Drawing.Color.Transparent;
+            this.SearchTextbox.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(45)))), ((int)(((byte)(45)))), ((int)(((byte)(48)))));
+            this.SearchTextbox.BorderColor = System.Drawing.Color.Transparent;
+            this.SearchTextbox.BorderRadius = 10;
+            this.SearchTextbox.Location = new System.Drawing.Point(968, 12);
+            this.SearchTextbox.Multiline = false;
+            this.SearchTextbox.Name = "SearchTextbox";
+            this.SearchTextbox.Padding = new System.Windows.Forms.Padding(10);
+            this.SearchTextbox.PlaceholderColor = System.Drawing.Color.DimGray;
+            this.SearchTextbox.PlaceholderText = "Search";
+            this.SearchTextbox.Size = new System.Drawing.Size(254, 36);
+            this.SearchTextbox.TabIndex = 1;
+            this.SearchTextbox.TextBoxText = "";
+            this.SearchTextbox.TextColor = System.Drawing.Color.White;
+            // 
             // PathTextbox
             // 
+            this.PathTextbox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.PathTextbox.BackColor = System.Drawing.Color.Transparent;
             this.PathTextbox.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(45)))), ((int)(((byte)(45)))), ((int)(((byte)(48)))));
             this.PathTextbox.BorderColor = System.Drawing.Color.Transparent;
@@ -110,7 +147,7 @@
             this.PathTextbox.Padding = new System.Windows.Forms.Padding(10);
             this.PathTextbox.PlaceholderColor = System.Drawing.Color.DimGray;
             this.PathTextbox.PlaceholderText = "Path";
-            this.PathTextbox.Size = new System.Drawing.Size(962, 36);
+            this.PathTextbox.Size = new System.Drawing.Size(702, 36);
             this.PathTextbox.TabIndex = 0;
             this.PathTextbox.TextBoxText = "";
             this.PathTextbox.TextColor = System.Drawing.Color.White;
@@ -164,6 +201,7 @@
             this.ButtonReturn.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.ButtonReturn.TabIndex = 17;
             this.ButtonReturn.TabStop = false;
+            this.ButtonReturn.Click += new System.EventHandler(this.ButtonReturn_Click);
             // 
             // ButtonBack
             // 
@@ -242,6 +280,7 @@
             this.ButtonCopy.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.ButtonCopy.TabIndex = 20;
             this.ButtonCopy.TabStop = false;
+            this.ButtonCopy.Click += new System.EventHandler(this.ButtonCopy_Click);
             // 
             // ButtonPaste
             // 
@@ -257,6 +296,7 @@
             this.ButtonPaste.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.ButtonPaste.TabIndex = 21;
             this.ButtonPaste.TabStop = false;
+            this.ButtonPaste.Click += new System.EventHandler(this.ButtonPaste_Click);
             // 
             // ButtonCut
             // 
@@ -272,6 +312,7 @@
             this.ButtonCut.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.ButtonCut.TabIndex = 24;
             this.ButtonCut.TabStop = false;
+            this.ButtonCut.Click += new System.EventHandler(this.ButtonCut_Click);
             // 
             // panel5
             // 
@@ -320,6 +361,7 @@
             this.ButtonRefresh.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.ButtonRefresh.TabIndex = 28;
             this.ButtonRefresh.TabStop = false;
+            this.ButtonRefresh.Click += new System.EventHandler(this.ButtonRefresh_Click);
             // 
             // ButtonStar
             // 
@@ -334,6 +376,7 @@
             this.ButtonStar.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.ButtonStar.TabIndex = 25;
             this.ButtonStar.TabStop = false;
+            this.ButtonStar.Click += new System.EventHandler(this.ButtonStar_Click);
             // 
             // panel4
             // 
@@ -347,7 +390,7 @@
             // ButtonRename
             // 
             this.ButtonRename.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(30)))), ((int)(((byte)(30)))));
-            this.ButtonRename.IconChar = FontAwesome.Sharp.IconChar.Keyboard;
+            this.ButtonRename.IconChar = FontAwesome.Sharp.IconChar.FilePen;
             this.ButtonRename.IconColor = System.Drawing.Color.White;
             this.ButtonRename.IconFont = FontAwesome.Sharp.IconFont.Auto;
             this.ButtonRename.IconSize = 24;
@@ -372,6 +415,7 @@
             this.ButtonDelete.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.ButtonDelete.TabIndex = 22;
             this.ButtonDelete.TabStop = false;
+            this.ButtonDelete.Click += new System.EventHandler(this.ButtonDelete_Click);
             // 
             // Main
             // 
@@ -395,6 +439,7 @@
             this.Resize += new System.EventHandler(this.Form1_Resize);
             this.panel1.ResumeLayout(false);
             this.panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.ButtonSearch)).EndInit();
             this.flowLayoutPanel1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.ButtonReturn)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.ButtonBack)).EndInit();
@@ -439,6 +484,8 @@
         private System.Windows.Forms.Panel panel4;
         private FontAwesome.Sharp.IconPictureBox ButtonRename;
         private FontAwesome.Sharp.IconPictureBox ButtonDelete;
+        private Controls.ModernTextBox SearchTextbox;
+        private System.Windows.Forms.PictureBox ButtonSearch;
     }
 }
 

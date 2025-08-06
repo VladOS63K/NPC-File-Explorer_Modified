@@ -76,6 +76,8 @@ namespace NPC_File_Browser
             ContentPanel.Controls.Clear();
             _fileControls.Clear();
 
+            SearchTextbox.PlaceholderText = "Search: " + Path.GetDirectoryName(directory);
+
             try
             {
                 string[] folders = Directory.GetDirectories(directory);
@@ -86,7 +88,7 @@ namespace NPC_File_Browser
                     if (cancellationToken.IsCancellationRequested) return;
 
                     DirectoryInfo info = new DirectoryInfo(folder);
-                    var fileControl = AddItem(false, info.Name, "Calculating...", "Folder", info.FullName);
+                    var fileControl = AddItem(false, info.Name, "Calculating...", "Folder", info.FullName, null);
 
                     Task.Run(async () => await CalculateFolderSizeAsync(info, fileControl, cancellationToken));
                 }
@@ -124,7 +126,7 @@ namespace NPC_File_Browser
                     }
 
                     AddItem(true, info.Name, Helper.Helper.ConvertedSize(Convert.ToDouble(info.Length)),
-                           extension, info.FullName);
+                           extension, info.FullName, info.Extension);
                 }
             }
             catch (UnauthorizedAccessException)
@@ -175,9 +177,9 @@ namespace NPC_File_Browser
             }
         }
 
-        private FileControl AddItem(bool isFile, string fileName, string fileSize, string fileExtension, string fullPath)
+        private FileControl AddItem(bool isFile, string fileName, string fileSize, string fileExtension, string fullPath, string fullFileExt)
         {
-            FileControl FC = new FileControl(isFile, fileName, fileSize, fileExtension);
+            FileControl FC = new FileControl(isFile, fileName, fileSize, fileExtension, fullFileExt);
             FC.FolderPath = fullPath;
             FC.FileClicked += UpdateItems_FileClicked;
             FC.FileDoubleClicked += UpdateItems_FileDoubleClicked;
@@ -189,13 +191,15 @@ namespace NPC_File_Browser
         private void UpdateItems_FileClicked(object sender, string directory)
         {
             FileControl ctrl = sender as FileControl;
-            Console.WriteLine("Click");
             if (!PathsClicked.Contains(directory))
             {
                 if (!isCtrlHold) PathsClicked.Clear();
                 foreach (FileControl c in _fileControls.Values)
                 {
-                    c.BackColor = Color.Transparent;
+                    if (!c.Equals(ctrl))
+                    {
+                        c.Deselect();
+                    }
                 }
                 PathsClicked.Add(directory);
                 ctrl.Select();
@@ -207,6 +211,7 @@ namespace NPC_File_Browser
             else
             {
                 PathsClicked.Remove(directory);
+                ctrl.Deselect();
             }
         }
 
@@ -224,13 +229,11 @@ namespace NPC_File_Browser
 
         private async void UpdateItems_FileDoubleClicked(object sender, string directory)
         {
-            Console.WriteLine("Dabl Click");
             FileControl ctrl = sender as FileControl;
             if (ctrl.IsFile)
             {
                 try
                 {
-                    Console.WriteLine("Starting file");
                     Process.Start(ctrl.FolderPath);
                 }
                 catch (Exception ex)
@@ -240,7 +243,6 @@ namespace NPC_File_Browser
             }
             else
             {
-                Console.WriteLine("Open folder");
                 await LoadItemsAsync(directory);
             }
         }
@@ -510,17 +512,7 @@ namespace NPC_File_Browser
 
         private void ButtonStar_Click(object sender, EventArgs e)
         {
-            if (IsPathPinned(LastPathClicked))
-            {
-                RemovePinnedFolder(LastPathClicked);
-            }
-            else
-            {
-                AddPinnedFolder(LastPathClicked);
-            }
 
-            UpdateStarButton();
-            LoadSidebar();
         }
 
         protected override void OnFormClosed(FormClosedEventArgs e)

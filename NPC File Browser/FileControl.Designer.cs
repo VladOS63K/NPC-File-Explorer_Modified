@@ -49,10 +49,9 @@ namespace NPC_File_Browser
             this.Icon.IconChar = FontAwesome.Sharp.IconChar.File;
             this.Icon.IconColor = System.Drawing.Color.White;
             this.Icon.IconFont = FontAwesome.Sharp.IconFont.Auto;
-            this.Icon.IconSize = 23;
             this.Icon.Location = new System.Drawing.Point(0, 1);
             this.Icon.Name = "Icon";
-            this.Icon.Size = new System.Drawing.Size(30, 23);
+            this.Icon.Size = new System.Drawing.Size(24, 24);
             this.Icon.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.Icon.TabIndex = 0;
             this.Icon.TabStop = false;
@@ -94,7 +93,7 @@ namespace NPC_File_Browser
             this.FileSizeLabel.Size = new System.Drawing.Size(97, 17);
             this.FileSizeLabel.TabIndex = 3;
             this.FileSizeLabel.Text = "Size";
-            this.FileSizeLabel.TextAlign = System.Drawing.ContentAlignment.TopRight;
+            this.FileSizeLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.FileSizeLabel.Click += new System.EventHandler(this.FileControl_Click);
             this.FileSizeLabel.DoubleClick += new System.EventHandler(this.FileControl_DoubleClick);
             // 
@@ -109,7 +108,7 @@ namespace NPC_File_Browser
             // jkhfewjkfwToolStripMenuItem
             // 
             this.jkhfewjkfwToolStripMenuItem.Name = "jkhfewjkfwToolStripMenuItem";
-            this.jkhfewjkfwToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.jkhfewjkfwToolStripMenuItem.Size = new System.Drawing.Size(158, 22);
             this.jkhfewjkfwToolStripMenuItem.Text = "jkhfewjkfw";
             // 
             // iconMenuItem1
@@ -118,7 +117,7 @@ namespace NPC_File_Browser
             this.iconMenuItem1.IconColor = System.Drawing.Color.Black;
             this.iconMenuItem1.IconFont = FontAwesome.Sharp.IconFont.Auto;
             this.iconMenuItem1.Name = "iconMenuItem1";
-            this.iconMenuItem1.Size = new System.Drawing.Size(180, 22);
+            this.iconMenuItem1.Size = new System.Drawing.Size(158, 22);
             this.iconMenuItem1.Text = "iconMenuItem1";
             // 
             // FileControl
@@ -132,7 +131,7 @@ namespace NPC_File_Browser
             this.Controls.Add(this.FileNameLabel);
             this.Controls.Add(this.Icon);
             this.Name = "FileControl";
-            this.Size = new System.Drawing.Size(609, 25);
+            this.Size = new System.Drawing.Size(983, 25);
             this.Click += new System.EventHandler(this.FileControl_Click);
             this.DoubleClick += new System.EventHandler(this.FileControl_DoubleClick);
             ((System.ComponentModel.ISupportInitialize)(this.Icon)).EndInit();

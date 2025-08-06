@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.IO;
 
 namespace NPC_File_Browser
 {
@@ -18,7 +19,7 @@ namespace NPC_File_Browser
         public bool IsSelected { get; private set; } = false;
         public bool IsFile { get; private set; }
 
-        public FileControl(bool isFile, string fileName, string fileSize, string fileExtension)
+        public FileControl(bool isFile, string fileName, string fileSize, string fileExtension, string fullFileExt)
         {
             InitializeComponent();
             if (isFile)
@@ -28,7 +29,7 @@ namespace NPC_File_Browser
             this.IsFile = isFile;
             bool isFileNameLong = !(fileName.Length <= 25);
 
-            FileNameLabel.Text = fileName.Substring(0,(isFileNameLong?25:fileName.Length))+(isFileNameLong?"...":"");
+            FileNameLabel.Text = Path.GetFileName(fileName).Substring(0, (isFileNameLong ? 25 : fileName.Length)) + (isFileNameLong ? "..." : "") + (isFileNameLong && isFile && !String.IsNullOrEmpty(fullFileExt) ? "(" + fullFileExt + ")" : "");
             FileExtensionLabel.Text = fileExtension;
             FileSizeLabel.Text = fileSize;
             this.Click += FileControl_Click;
