@@ -14,7 +14,7 @@ namespace NPC_File_Browser
     {
         double pbUnit;
         int pbWIDTH, pbHEIGHT, pbComplete;
-        Font lblSizeFont = new Font("Segoe UI", (float)8.25, FontStyle.Regular);
+        Font lblSizeFont = new Font("Segoe UI", 8.25F, FontStyle.Regular);
         Bitmap bmp;
         Graphics g;
         public SideBarDriveControl(string drive)
