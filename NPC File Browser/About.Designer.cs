@@ -261,7 +261,7 @@
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(113, 48);
             this.label5.TabIndex = 5;
-            this.label5.Text = "Github\r\n(C# Programming)";
+            this.label5.Text = "GitHub\r\n(C# Programming)";
             this.label5.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // GithubVladOS63K
@@ -371,6 +371,7 @@
             this.iconPictureBox1.IconChar = FontAwesome.Sharp.IconChar.Heart;
             this.iconPictureBox1.IconColor = System.Drawing.Color.White;
             this.iconPictureBox1.IconFont = FontAwesome.Sharp.IconFont.Solid;
+            this.iconPictureBox1.IconSize = 24;
             this.iconPictureBox1.Location = new System.Drawing.Point(369, 452);
             this.iconPictureBox1.Name = "iconPictureBox1";
             this.iconPictureBox1.Size = new System.Drawing.Size(24, 24);
